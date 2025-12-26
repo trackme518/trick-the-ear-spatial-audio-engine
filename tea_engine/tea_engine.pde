@@ -1,17 +1,13 @@
 /*
-
  ©2025 Vojtech Leischner
- Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0). When using or distributing the code, give credit in the form of "Trick the Ear Engine software (https://github.com/trackme518/OSCreplay) by Vojtech Leischner (https://trackmeifyoucan.com)". Please refer to the license or see online reference. The author is not liable for any damage caused by the software. Usage of the software is completely at your own risk. For commercial licensing, please contact us.
+ Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0).
+ When using or distributing the code, give credit in the form of "Trick the Ear Audio Engine software (https://github.com/trackme518/trick-the-ear-spatial-audio-engine) by Vojtech Leischner (https://trackmeifyoucan.com)".
  
- TBD
- * normalize preset positions when using generator...
+ Please refer to the license at https://creativecommons.org/licenses/by-nc-sa/4.0/.
  
- * add compatibility with Linux / Mac with Sound lib?
- * add unloading
- * add async loading
- * add OSC restart
- * optimize HRTF inside host bufferSwitch - get rid of allocation
- 
+ The author is not liable for any damage caused by the software.
+ Usage of the software is completely at your own risk.
+ For commercial licensing, please contact us.
  */
 
 /*
@@ -23,8 +19,7 @@
  https://github.com/mhroth/jasiohost/blob/master/src/com/synthbot/jasiohost/ExampleHost.java
  */
 
-
-String windowTitle = "Trick the Ear Engine v1.0";
+String windowTitle = "Trick the Ear - Audio Engine v1.0";
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -37,8 +32,6 @@ PApplet context;
 import peasy.PeasyCam;
 PeasyCam cam;
 
-//connect processing sound to output into ASIO device
-
 import com.krab.lazy.*;
 LazyGui gui;
 
@@ -49,14 +42,6 @@ String[] generatePresetModes = {"circular", "rectangular"};
 int playbackModeInt = 1; //default "play all"
 boolean syncRecToPlay = false;
 //---------------------
-
-
-//debug binaural
-HashMap<String, PVector> positions = new HashMap<String, PVector>();
-PVector sourcePosition = new PVector();
-String currentPosKey = "front"; // default position
-boolean orbit = false;
-//-------
 
 PGraphics canvas; //offscreen render texture for 3D speakers visualization
 SpatialAudio spatialEngine;
@@ -85,20 +70,6 @@ void setup() {
   tuioClient  = new TuioProcessing(this);
 
   loadingStatus = new Loading();
-  /*
-  ///debug
-   // Set positions
-   positions.put("front", new PVector(1, 0, 0));
-   positions.put("right", new PVector(0, 0, 1));
-   positions.put("back", new PVector(-1, 0, 0));
-   positions.put("left", new PVector(0, 0, -1));
-   positions.put("up", new PVector(0, 1, 0));
-   positions.put("down", new PVector(0, -1, 0));
-   positions.put("front-right", new PVector(1, 0, 1));
-   positions.put("back-left", new PVector(-1, 0, -1));
-   positions.put("front-up", new PVector(1, 1, 0));
-   sourcePosition.set( positions.get(currentPosKey) );
-   */
 
   cam = new PeasyCam(this, 1200);
   cam.setMinimumDistance(10);
@@ -115,69 +86,7 @@ void checkResize() {
 }
 
 
-void keyPressed() {
-  if (key == CODED) {
-    if (keyCode == UP) {
-      currentPosKey = "up";
-    } else if (keyCode == DOWN) {
-      currentPosKey = "down";
-    } else if (keyCode == LEFT) {
-      currentPosKey = "left";
-    } else if (keyCode == RIGHT) {
-      currentPosKey = "right";
-    }
-  }
-
-  if (key=='a') {
-    currentPosKey = "front-right";
-  } else if (key == 'b') {
-    currentPosKey = "back-left";
-  } else if (key == 'c') {
-    currentPosKey = "front-up";
-  } else if (key == 'd') {
-    orbit = !orbit;
-    println(orbit);
-  }
-
-  sourcePosition.set( positions.get(currentPosKey) );
-  println(currentPosKey);
-}
-
 void draw() {
-  /*
-  // Rotate source in full circle around Y axis
-   float timeSec = millis() / 1000.0;
-   float orbitAngle = TWO_PI * (timeSec / 10.0); // full orbit in 10s
-   float radius = 150;
-   
-   PVector source = new PVector();
-   
-   if (orbit) {
-   float sourceX = cos(orbitAngle) * radius;
-   float sourceZ = sin(orbitAngle) * radius;
-   float sourceY = 0;
-   source.set(sourceX, sourceY, sourceZ);
-   } else {
-   source.set(sourcePosition.copy());
-   }
-   //float sourceX = cos(orbitAngle) * radius;
-   //float sourceZ = sin(orbitAngle) * radius;
-   //float sourceY = 0;
-   
-   // Scale by radius
-   source.mult(radius);
-   
-   // Compute azimuth and elevation
-   if (playlists!= null && playlists.playlist != null) {
-   for (int i=0; i<playlists.playlist.samples.size(); i++) {
-   Track currTrack = playlists.playlist.getTrack(i);
-   currTrack.setPosition(source);
-   //currTrack.hrtf.setPosition(source);
-   }
-   }
-   
-   */
-
   //---------------------------------
   background(0);
 
