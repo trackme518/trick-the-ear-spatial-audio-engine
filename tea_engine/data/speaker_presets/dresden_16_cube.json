@@ -1,0 +1,20 @@
+{
+  "name": "dresden 16 cube",
+  "speakers":[
+    {"index":7, "position_normalized":[-1,0.25,1]},
+    {"index":13, "position_normalized":[-1,-0.25,1]},
+    {"index":5, "position_normalized":[-1,0.25,0.3]},
+    {"index":11, "position_normalized":[-1,-0.25,0.3]},
+    {"index":3, "position_normalized":[-1,0.25,-0.3]},
+    {"index":9, "position_normalized":[-1,-0.25,-0.3]},
+    {"index":0, "position_normalized":[-1,0.25,-1]},
+    {"index":2, "position_normalized":[0,0.25,-1]},
+    {"index":1, "position_normalized":[1,0.25,-1]},
+    {"index":10, "position_normalized":[1,-0.25,-0.3]},
+    {"index":4, "position_normalized":[1,0.25,-0.3]},
+    {"index":12, "position_normalized":[1,-0.25,0.3]},
+    {"index":6, "position_normalized":[1,0.25,0.3]},
+    {"index":14, "position_normalized":[1,-0.25,1]},
+    {"index":8, "position_normalized":[1,0.25,1]}
+  ]
+}

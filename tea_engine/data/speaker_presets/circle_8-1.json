@@ -1,0 +1,95 @@
+{
+  "speakers": [
+    {
+      "index": 0,
+      "lfe": false,
+      "position_normalized": [
+        1,
+        0,
+        0
+      ],
+      "label": "0"
+    },
+    {
+      "index": 1,
+      "lfe": false,
+      "position_normalized": [
+        0.7071067690849304,
+        0.7071067690849304,
+        0
+      ],
+      "label": "1"
+    },
+    {
+      "index": 2,
+      "lfe": false,
+      "position_normalized": [
+        -4.371138828673793E-8,
+        1,
+        0
+      ],
+      "label": "2"
+    },
+    {
+      "index": 3,
+      "lfe": false,
+      "position_normalized": [
+        -0.7071067690849304,
+        0.7071067690849304,
+        0
+      ],
+      "label": "3"
+    },
+    {
+      "index": 4,
+      "lfe": false,
+      "position_normalized": [
+        -1,
+        -8.742277657347586E-8,
+        0
+      ],
+      "label": "4"
+    },
+    {
+      "index": 5,
+      "lfe": false,
+      "position_normalized": [
+        -0.7071066498756409,
+        -0.70710688829422,
+        0
+      ],
+      "label": "5"
+    },
+    {
+      "index": 6,
+      "lfe": false,
+      "position_normalized": [
+        1.1924880638503055E-8,
+        -1,
+        0
+      ],
+      "label": "6"
+    },
+    {
+      "index": 7,
+      "lfe": false,
+      "position_normalized": [
+        0.7071070075035095,
+        -0.7071065306663513,
+        0
+      ],
+      "label": "7"
+    },
+    {
+      "index": 8,
+      "lfe": true,
+      "position_normalized": [
+        0.7071070075035095,
+        -0.7071065306663513,
+        0
+      ],
+      "label": "sub"
+    }
+  ],
+  "name": "circle 8.1"
+}

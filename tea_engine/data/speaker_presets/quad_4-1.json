@@ -1,0 +1,55 @@
+{
+  "speakers": [
+    {
+      "index": 0,
+      "lfe": false,
+      "position_normalized": [
+        -0.5,
+        -0.5,
+        0
+      ],
+      "label": "0"
+    },
+    {
+      "index": 1,
+      "lfe": false,
+      "position_normalized": [
+        0.5,
+        -0.5,
+        0
+      ],
+      "label": "1"
+    },
+    {
+      "index": 2,
+      "lfe": false,
+      "position_normalized": [
+        -0.5,
+        0.5,
+        0
+      ],
+      "label": "2"
+    },
+    {
+      "index": 3,
+      "lfe": false,
+      "position_normalized": [
+        0.5,
+        0.5,
+        0
+      ],
+      "label": "3"
+    },
+     {
+      "index": 4,
+      "lfe": true,
+      "position_normalized": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "label": "sub"
+    }
+  ],
+  "name": "quad 4.1"
+}
