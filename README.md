@@ -11,7 +11,7 @@ The App is a spatial audio engine and audio mixer all in one. You have multiple 
 * Now you are connected to the given ASIO device, and you may click `play`.  
 * In the GUI, click `Tracks`, `Name of your track`, and you will see a bunch of options. Make sure that `spatial` & `static` are set to true. Adjust the `position` of each audio File in space - you can increase or decrease the precision of the slider by using the mouse scroll wheel. 
 
-![Encoder screenshot](./assets/screenshot1.png)
+[![Video demo showing various speaker topologies](./assets/screenshot1.png)](https://www.youtube.com/watch?v=s-aY4L8xGKc)
 
 ## Download
 * [Latest release](https://github.com/trackme518/trick-the-ear-spatial-audio-engine/releases)
@@ -19,8 +19,6 @@ The App is a spatial audio engine and audio mixer all in one. You have multiple 
 MacOS and Linux builds will be added later.
 
 Download links provide a zipped archive with the tool. You don't need to install anything - unzip it and run the ".exe" file.
-
-[![Video demo showing various speaker topologies](https://img.youtube.com/vi/s-aY4L8xGKc/0.jpg)](https://www.youtube.com/watch?v=s-aY4L8xGKc)
 
 ## To be done - Features wanted
 * Add MacOS and Linux audio interfaces (currently relying on ASIO drivers)
