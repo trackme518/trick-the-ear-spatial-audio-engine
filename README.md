@@ -20,6 +20,8 @@ MacOS and Linux builds will be added later.
 
 Download links provide a zipped archive with the tool. You don't need to install anything - unzip it and run the ".exe" file.
 
+[![Video demo showing various speaker topologies](https://img.youtube.com/vi/s-aY4L8xGKc/0.jpg)](https://www.youtube.com/watch?v=s-aY4L8xGKc)
+
 ## To be done - Features wanted
 * Add MacOS and Linux audio interfaces (currently relying on ASIO drivers)
 * Add more animation types
