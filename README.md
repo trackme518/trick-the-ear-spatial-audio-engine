@@ -1,7 +1,7 @@
 # Trick the Ear Audio Engine (TEA-E) - Spatial Audio Engine
 
 ## What is this good for?
-The App is a spatial audio engine and audio mixer all in one. You have multiple speakers, and you want to create an illusion that the sound is moving between them. It can also render spatial audio into binaural stereo for headphones monitoring. 
+The App is a spatial audio engine and audio mixer all in one. You have multiple speakers, and you want to create an illusion that the sound is moving between them. It can also render spatial audio into binaural stereo for headphones monitoring. You can also directly record the audio output (each channel will be a separate audio file). 
 
 ## How to use it?
 * Place your .wav mono audio files in `data/samples/your-playlist-name` folder (it can be a single track or multiple, they will all be played in sync).
