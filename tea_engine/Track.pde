@@ -84,7 +84,7 @@ class Track {
   //----------------------------------------------------------------------
 
   public void setPosition(PVector v) {
-    virtualSource.position.set(v);
+    virtualSource.setPosition(v);
   }
 
   public PVector getPosition() {

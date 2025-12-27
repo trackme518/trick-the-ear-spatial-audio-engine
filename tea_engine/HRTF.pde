@@ -10,7 +10,15 @@ import io.jhdf.api.Dataset;
 import java.util.List;
 import org.jtransforms.fft.FloatFFT_1D;
 
+import java.util.function.Consumer;
+
 SharedHrtfContext sharedHRTF;
+
+
+public interface HrtfReadyCallback {
+  void onReady(SharedHrtfContext ctx);
+  void onError(Exception e);
+}
 
 public class SharedHrtfContext {
   // SH order
@@ -24,54 +32,113 @@ public class SharedHrtfContext {
 
   public int fftSize;
   FloatFFT_1D fft;
-  public final int irLength;
-  public final int bufferSize;
+  public int irLength;
+  public int bufferSize;
 
-  public SharedHrtfContext(int bufferSize) {
+  private volatile boolean ready = false;
+
+  public SharedHrtfContext(int bufferSize, Consumer<SharedHrtfContext> onReady) {
     this.bufferSize = bufferSize;
 
-    // Load SOFA file
+    // fire async loading
+    new Thread(() -> {
+      try {
+        loadAsync();
+        ready = true;
+        if (onReady != null) onReady.accept(this);
+      }
+      catch (Exception e) {
+        println("Failed loading HRIR SOFA for HRTF inside SharedHrtfContext class: "+e);
+        ready = false;
+        //if (onError != null) onError.accept(e);
+      }
+    }
+    , "HRTF-Loader").start();
+  }
+
+  private void loadAsync() throws Exception {
+
     String hrirFolder = dataPath("HRIR");
     File dir = new File(hrirFolder);
     File[] sofaFiles = dir.listFiles((d, name) -> name.toLowerCase().endsWith(".sofa"));
 
     if (sofaFiles == null || sofaFiles.length == 0) {
-      println("No SOFA files found in " + hrirFolder);
+      throw new RuntimeException("No SOFA files found in " + hrirFolder);
     }
 
-    this.interpolator = new HrirInterpolatorSH();
+    interpolator = new HrirInterpolatorSH();
 
     String sofaPath = sofaFiles[0].getAbsolutePath();
     System.out.println("Loading HRIRs from: " + sofaPath);
 
     Map<PVector, float[]> hrirLtmp = new HashMap<>();
     Map<PVector, float[]> hrirRtmp = new HashMap<>();
-    int irLenTmp = loadHRIRsFromSofa(sofaPath, hrirLtmp, hrirRtmp);
 
-    this.irLength = irLenTmp;
+    irLength = loadHRIRsFromSofa(sofaPath, hrirLtmp, hrirRtmp);
 
-    // Compute fftSize based on buffer + IR length
     int fftSz = 1;
     while (fftSz < bufferSize + irLength - 1) fftSz <<= 1;
-    this.fftSize = fftSz;
+    fftSize = fftSz;
 
-    this.fft = new FloatFFT_1D(fftSize);
+    fft = new FloatFFT_1D(fftSize);
 
-    // Precompute FFT HRIRs
     precomputeIrFreq(hrirLtmp, irFreqL, fftSize);
     precomputeIrFreq(hrirRtmp, irFreqR, fftSize);
 
-    // Fit SH
-    interpolator = new HrirInterpolatorSH();
-    try {
-      interpolator.fitSH(irFreqL, irFreqR, fftSize);
-    }
-    catch(Exception e) {
-      println(e);
-      return;
-    }
-    System.out.println("SharedHrtfContext ready. FFT size=" + fftSize + ", IR length=" + irLength);
+    interpolator.fitSH(irFreqL, irFreqR, fftSize);
+
+    System.out.println(
+      "SharedHrtfContext ready. FFT size=" + fftSize + ", IR length=" + irLength
+      );
   }
+
+  /*
+  public SharedHrtfContext(int bufferSize) {
+   this.bufferSize = bufferSize;
+   
+   // Load SOFA file
+   String hrirFolder = dataPath("HRIR");
+   File dir = new File(hrirFolder);
+   File[] sofaFiles = dir.listFiles((d, name) -> name.toLowerCase().endsWith(".sofa"));
+   
+   if (sofaFiles == null || sofaFiles.length == 0) {
+   println("No SOFA files found in " + hrirFolder);
+   }
+   
+   this.interpolator = new HrirInterpolatorSH();
+   
+   String sofaPath = sofaFiles[0].getAbsolutePath();
+   System.out.println("Loading HRIRs from: " + sofaPath);
+   
+   Map<PVector, float[]> hrirLtmp = new HashMap<>();
+   Map<PVector, float[]> hrirRtmp = new HashMap<>();
+   int irLenTmp = loadHRIRsFromSofa(sofaPath, hrirLtmp, hrirRtmp);
+   
+   this.irLength = irLenTmp;
+   
+   // Compute fftSize based on buffer + IR length
+   int fftSz = 1;
+   while (fftSz < bufferSize + irLength - 1) fftSz <<= 1;
+   this.fftSize = fftSz;
+   
+   this.fft = new FloatFFT_1D(fftSize);
+   
+   // Precompute FFT HRIRs
+   precomputeIrFreq(hrirLtmp, irFreqL, fftSize);
+   precomputeIrFreq(hrirRtmp, irFreqR, fftSize);
+   
+   // Fit SH
+   interpolator = new HrirInterpolatorSH();
+   try {
+   interpolator.fitSH(irFreqL, irFreqR, fftSize);
+   }
+   catch(Exception e) {
+   println(e);
+   return;
+   }
+   System.out.println("SharedHrtfContext ready. FFT size=" + fftSize + ", IR length=" + irLength);
+   }
+   */
 
   private void precomputeIrFreq(Map<PVector, float[]> hrirTime, Map<PVector, float[]> irFreq, int fftSize) {
 

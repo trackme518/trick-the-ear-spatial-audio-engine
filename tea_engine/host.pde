@@ -1,4 +1,4 @@
-// ASIO interface for Windows audio realtime multichannel playback 
+// ASIO interface for Windows audio realtime multichannel playback
 
 import java.util.HashMap; // import the HashMap class
 
@@ -166,7 +166,8 @@ class AsioHost implements AsioDriverListener {
       this.initRecorders();
 
       //setup hrtf based on buffersize--------------------
-      sharedHRTF = new SharedHrtfContext(this.bufferSize); //global singleton
+      sharedHRTF = new SharedHrtfContext(this.bufferSize,this::onHrtfReady); //global singleton
+      //this::onHrtfReady means reference to function in this class (alternative lambda is: ctx -> onHrtfReady(ctx)
 
       for (int p=0; p<playlists.playlists.size(); p++) {
         Playlist playlist = playlists.playlists.get(p);
@@ -177,6 +178,16 @@ class AsioHost implements AsioDriverListener {
       }
 
       //-------------------------------------------------------------------
+    }
+  }
+
+  void onHrtfReady(SharedHrtfContext ctx) {
+    for (int p=0; p<playlists.playlists.size(); p++) {
+      Playlist playlist = playlists.playlists.get(p);
+      for (int i=0; i<playlist.samples.size(); i++) {
+        Track currTrack = playlist.getTrack(i);
+        currTrack.virtualSource.initHrtf(sharedHRTF);//set shared instance
+      }
     }
   }
 
@@ -254,8 +265,8 @@ class AsioHost implements AsioDriverListener {
       Track currTrack = playlists.playlist.getTrack(i);
 
       if (!currTrack.isPlaying()) continue;
-      
-      if(currTrack.mute) continue;
+
+      if (currTrack.mute) continue;
 
       // --- Compute global track position and remaining frames ---
       int trackPos = (int) (this.sampleIndex - currTrack.sampleIndexOffset);

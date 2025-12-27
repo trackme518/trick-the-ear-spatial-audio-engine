@@ -63,7 +63,7 @@ class VirtualSource {
   }
 
   void setPosition(PVector vec) {
-    //println(currPos);
+    //println("set position: "+vec);
     this.position.set(vec);
 
     if (this.hrtf!=null && host.binaural) {
@@ -78,7 +78,8 @@ class VirtualSource {
 
   void update() {
     if (animator != null) {
-      position.set(animator.update(position));
+      this.setPosition(animator.update(position) );
+      //position.set(animator.update(position));
     }
 
     updateGains();
