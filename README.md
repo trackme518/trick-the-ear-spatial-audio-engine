@@ -103,7 +103,7 @@ Special thank you to:
 * [Pavel Husa](https://github.com/pavelhusa) for consultation
 * [Tangible Audio Lab in Linz](https://tamlab.kunstuni-linz.at/) for inspiration
 * [Prof. Dr.-Ing. Dietrich Kammer](https://dkammer.org/) and SYNC!D team for an opporutnity to work on mobile audio container lab in Dresden
-* [Univ.-Prof. Dr. Martin Kaltenbrunner](https://tamlab.kunstuni-linz.at/team/martin-kaltenbrunner/) for consultation
+* [Univ.-Prof. Dr. Martin Kaltenbrunner](https://tamlab.kunstuni-linz.at/team/martin-kaltenbrunner/) for consultation and TUIO protocol suite
 * [Ass.-Prof. Dr. Enrique Tomás](https://tamlab.kunstuni-linz.at/team/enrique-tomas/) for consultation
 * Jimmy Orawetz for testing
 
