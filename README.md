@@ -98,6 +98,15 @@ Download [Processing](https://processing.org/) (originally made with version 4.3
 ### Windows
 Tested on Windows 11. It should work out of the box. Just double-click the ".exe" file. If you are using an antivirus such as Windows Defender, it will show a warning - you can safely click "More info" and choose "Run anyway". Next time it should run without warning. Allow the program in your firewall for both private and public connections.
 
+## Acknowledgments
+Special thank you to:
+* [Pavel Husa](https://github.com/pavelhusa) for consultation
+* [Tangible Audio Lab in Linz](https://tamlab.kunstuni-linz.at/) for inspiration
+* [Prof. Dr.-Ing. Dietrich Kammer](https://dkammer.org/) and SYNC!D team for an opporutnity to work on mobile audio container lab in Dresden
+* [Univ.-Prof. Dr. Martin Kaltenbrunner](https://tamlab.kunstuni-linz.at/team/martin-kaltenbrunner/) for consultation
+* [Ass.-Prof. Dr. Enrique Tomás](https://tamlab.kunstuni-linz.at/team/enrique-tomas/) for consultation
+* Jimmy Orawetz for testing
+
 ## Cite
 Please always link back to this repository. I am waiting for the associated white paper to be published at Springer...TBD
 
