@@ -93,7 +93,7 @@ Download [Processing](https://processing.org/) (originally made with version 4.3
 * [LazyGui](https://github.com/KrabCode/LazyGui) - GUI package
 * [TUIO](https://github.com/mkalten/TUIO11_Processing) TUIO protocol API
 * [jHDF](https://github.com/jamesmudd/jhdf) Loading HDF files (.sofa)
-* * [Jasio host](https://github.com/mhroth/jasiohost) - ASIO SDK (Windows) - tested, works
+* [Jasio host](https://github.com/mhroth/jasiohost) - ASIO SDK (Windows) - tested, works
 * [JCoreAudio](https://github.com/mhroth/JCoreAudio/tree/master) CoreAudio SDK (MacOS) - untested
 * [jnajack](https://github.com/jaudiolibs/jnajack) - Linux Audio SDK, untested (probably does not work)
 
