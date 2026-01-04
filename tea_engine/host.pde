@@ -1,3 +1,10 @@
+/*
+AudioEngine is the main class that handles playback
+ AudioEngine holds reference to AudioBackend class that encapsulate OS specific low level class to actually send audio to outputs
+ On Windows I am using ASIO
+ MacOS + Linux not implemnted yet
+ */
+
 import java.util.HashMap; // import the HashMap class
 
 interface AudioBackend {
@@ -68,12 +75,12 @@ class AudioEngine {
       backend = new AsioBackend();
     } else if (platform == MACOSX) {
       //TBD implement backend for MacOS later
-      println("Running on macOS");
+      println("Running on macOS"); //does nothing
     } else if (platform == LINUX) {
       //TBD implement backend for Linux later
-      println("Running on Linux");
+      println("Running on Linux"); //does nothing
     } else {
-      println("Unknown OS");
+      println("Unknown OS"); //does nothing
     }
 
 
@@ -84,6 +91,7 @@ class AudioEngine {
     }
   }
 
+  //only when the device is opened we start the engine
   void open(String deviceName) {
     backend.close();
     backend.setCallback(null);// Remove callback
@@ -208,6 +216,8 @@ class AudioEngine {
       write(outputs);
       return;
     }
+
+    if (playlists==null) return; //safe gurad - we need this global variable reference to actual sound file buffers
 
     if (!playlists.playlist.isPlaying) {
       write(outputs);
@@ -378,13 +388,13 @@ class AsioBackend implements AudioBackend, AsioDriverListener {
     sampleRate = sr;
     println("sampleRateDidChange() callback received."); //this WILL break AudioEngine - should call for reinit upper class
   }
-  
+
   @Override public void bufferSizeChanged(int bs) {
     bufferSize = bs;
     backendBuffers = new float[channels][bufferSize]; //this WILL break AudioEngine - should call for reinit upper class
     println("bufferSizeChanged() callback received.");
   }
-  
+
   @Override public void latenciesChanged(int i, int o) {
     println("latenciesChanged() callback received.");
   }
