@@ -73,10 +73,11 @@ class AudioEngine {
     if (platform == WINDOWS) {
       println("Running on Windows");
       backend = new AsioBackend();
-    } else if (platform == MACOSX) {
+    } else if (platform == MACOS) {
       println("Running on macOS"); //does nothing
       backend = new CoreAudioBackend();
     } else if (platform == LINUX) {
+      backend = new JackBackend();
       //TBD implement backend for Linux later
       println("Running on Linux"); //does nothing
     } else {
