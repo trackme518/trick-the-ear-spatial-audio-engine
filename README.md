@@ -23,7 +23,8 @@ Download links provide a zipped archive with the tool. You don't need to install
 ## To be done - Features wanted
 * Video tutorial + templates how to connect via OSC (coming soon)
 * Minor bug fixes
-* Add MacOS and Linux audio interfaces (currently relying on ASIO drivers)
+* Add MacOS audio interface
+* Add Linux audio interface
 * Add more animation types
 * Optimize performance (aka make it faster) 
 
