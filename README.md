@@ -9,7 +9,8 @@ The App is a spatial audio engine and audio mixer all in one. You have multiple 
   * Optionally you can also directly generate new 2D preset boiler plate from GUI using cirular or rectangular template (you still need to modify the channel order etc to suit your needs).
 * Run the software, it will automatically load all your playlists from `data/samples/` and your speaker presets from `data/speaker_presets`. In the GUI, select which preset and playlist you want.
 * In the GUI, click `output` and select the ASIO device you want to use. Click `open`. If you're going to test on headphones only, toggle the `binaural` option.
-* Now you are connected to the given ASIO device, and you may click `play`.  
+* Now you are connected to the given audio device, and you may click `play`.
+ * On Windows the App scans ASIO devices (if you don't have ASIO capable device, you can use [ASIO4ALL](https://asio4all.org/about/download-asio4all/)), on MacOS it uses CoreAudio.    
 * In the GUI, click `Tracks`, `Name of your track`, and you will see a bunch of options. Make sure that `spatial` & `static` are set to true. Adjust the `position` of each audio File in space - you can increase or decrease the precision of the slider by using the mouse scroll wheel. 
 
 [![Video demo showing various speaker topologies](./assets/screenshot1.png)](https://www.youtube.com/watch?v=s-aY4L8xGKc)
