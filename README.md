@@ -23,10 +23,13 @@ Download links provide a zipped archive with the tool. You don't need to install
 ## To be done - Features wanted
 * Video tutorial + templates how to connect via OSC (coming soon)
 * Minor bug fixes
-* Add MacOS audio interface
+* Test and fix if needed the MacOS audio interface -> create new release
 * Add Linux audio interface
 * Add more animation types
-* Optimize performance (aka make it faster) 
+* Optimize performance (aka make it faster)
+* Add support for loading subwoofers automatically from preset
+* Let user set binaural output channels manually
+* Add visualization for circular animation trajectories
 
 ## Speakers preset
 Place your speaker preset in `.JSON` format inside the `data/speaker_presets` folder. 
