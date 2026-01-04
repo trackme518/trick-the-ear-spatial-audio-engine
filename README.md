@@ -5,7 +5,8 @@ The App is a spatial audio engine and audio mixer all in one. You have multiple 
 
 ## How to use it?
 * Place your .wav mono audio files in `data/samples/your-playlist-name` folder (it can be a single track or multiple, they will all be played in sync).
-* Create a speaker preset in `JSON` format (see examples in `data/speaker_presets`), specify a name for the preset, where your speakers are, the channel number, and whether it is a subwoofer or a regular speaker. (Optionally you can also directly generate new 2D preset from GUI using cirular or rectangular template).
+* Create a speaker preset in `JSON` format (see examples in `data/speaker_presets`), specify a name for the preset, where your speakers are, the channel number, and whether it is a subwoofer or a regular speaker.
+  * Optionally you can also directly generate new 2D preset boiler plate from GUI using cirular or rectangular template (you still need to modify the channel order etc to suit your needs).
 * Run the software, it will automatically load all your playlists from `data/samples/` and your speaker presets from `data/speaker_presets`. In the GUI, select which preset and playlist you want.
 * In the GUI, click `output` and select the ASIO device you want to use. Click `open`. If you're going to test on headphones only, toggle the `binaural` option.
 * Now you are connected to the given ASIO device, and you may click `play`.  
