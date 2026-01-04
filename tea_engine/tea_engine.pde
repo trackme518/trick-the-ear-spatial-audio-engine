@@ -26,7 +26,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-AsioHost host;
+AudioEngine host;
+//AsioHost host;
 PApplet context;
 
 import peasy.PeasyCam;
@@ -60,8 +61,9 @@ void setup() {
 
   presetGenerator = new PresetGenerator();
   spatialEngine = new SpatialAudio();
-
-  host = new AsioHost();
+  
+  host = new AudioEngine();
+  //host = new AsioHost();
 
   gui = new LazyGui(this);
   gui.hide("options");
@@ -128,34 +130,30 @@ void draw() {
   //------------------------------
   //Output GUI
   gui.pushFolder("output");
-  String currDeviceName = gui.radio("device", host.asioDeviceNames );
+  String currDeviceName = gui.radio("device", host.deviceNames );
   host.binaural = gui.toggle("binaural", host.binaural);
 
   if (gui.button("open")) {
-    host.activate(currDeviceName);
+    host.open(currDeviceName); //will call backend
   }
-  gui.sliderSet("outputs:", host.activeChannels.size());
-  gui.toggleSet("active", host.outpputActive);
+  gui.sliderSet("outputs:", host.backend.getOutputChannelCount());
+  gui.toggleSet("active", host.backend.isActive() );
 
   if (gui.button("close")) {
-    host.close();
+    host.backend.close();
   }
 
   if (gui.button("restart")) {
-    host.resetRequest();
+    host.backend.resetRequest();
   }
 
   if (gui.button("control panel")) {
-    host.openControlPanel();
+    host.backend.openControlPanel();
   }
 
   boolean isTestingMode = gui.toggle("test noise", false);
   host.setTestSound( isTestingMode );
   host.setTestingChannel( gui.sliderInt("channel index", 0, 0, 128 ) );
-
-  if (gui.button("control panel")) {
-    host.openControlPanel();
-  }
 
   gui.pushFolder("subwoofers");
   host.applyLowpass = gui.toggle("lowpass", host.applyLowpass);
@@ -178,9 +176,9 @@ void draw() {
   for (int i=0; i<subCount; i++) {
     int channelIndex = gui.sliderInt("sub_"+i+"/channel", 0, 0, 64 );//-1 means disabled
 
-    if (host.activeChannels.size() > 0) {
-      if (channelIndex>=host.activeChannels.size()-1) {
-        gui.sliderSet("sub_"+i+"/channel", host.activeChannels.size()-1);
+    if (host.outputBuffers.size() > 0) {
+      if (channelIndex>=host.outputBuffers.size()-1) {
+        gui.sliderSet("sub_"+i+"/channel", host.outputBuffers.size()-1);
         break;
       }
     }
@@ -299,7 +297,7 @@ void draw() {
 
     for (int i=0; i< 128; i++) {
       String guiPath = "gain_" + i;
-      if (i<host.activeChannels.size()) {
+      if (i<host.outputBuffers.size()) {
         //for (int i=0; i< host.activeChannels.size(); i++) {
         gui.show(guiPath);
         if (manualControl) {
@@ -396,7 +394,7 @@ void draw() {
 void exit() {
   println("app clean exit");
   //close ASIO driver if it is running
-  host.close();
+  host.backend.close();
   super.exit();
 }
 

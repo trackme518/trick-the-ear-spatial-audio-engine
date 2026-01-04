@@ -84,7 +84,7 @@ void oscEvent(OscMessage m) {
     currAddress = m.getAddress();
   }
   catch(Exception e) {
-    println(e);
+    println("error in OSC: "+e);
     return;
   }
 
