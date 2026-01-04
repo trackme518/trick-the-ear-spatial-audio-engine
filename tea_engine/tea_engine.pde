@@ -10,14 +10,6 @@
  For commercial licensing, please contact us.
  */
 
-/*
- This sketch is using https://github.com/mhroth/jasiohost
- Include JAsioHost.jar in your Java project.
- Make jasiohost.dll available to your project. This can be done in several ways:
- Move or copy the library to C:\WINDOWS\system32. This is the default search location for JNI libraries.
- Inform the JVM where the library is located. This can be done with, e.g. java -Djava.library.path=C:\WINDOWS\system32
- https://github.com/mhroth/jasiohost/blob/master/src/com/synthbot/jasiohost/ExampleHost.java
- */
 
 String windowTitle = "Trick the Ear - Audio Engine v1.0";
 
