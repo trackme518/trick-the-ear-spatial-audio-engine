@@ -90,10 +90,11 @@ Download [Processing](https://processing.org/) (originally made with version 4.3
 
 ### Libraries used
 * [OSCP5](https://github.com/sojamo/oscp5) - Open Sound Control protocol API
-* [Jasio host](https://github.com/mhroth/jasiohost) - ASIO SDK
+* [Jasio host](https://github.com/mhroth/jasiohost) - ASIO SDK (Windows)
 * [LazyGui](https://github.com/KrabCode/LazyGui) - GUI package
 * [TUIO](https://github.com/mkalten/TUIO11_Processing) TUIO protocol API
 * [jHDF](https://github.com/jamesmudd/jhdf) Loading HDF files (.sofa)
+* [JCoreAudio](https://github.com/mhroth/JCoreAudio/tree/master) CoreAudio SDK (MacOS)
 
 ### Windows
 Tested on Windows 11. It should work out of the box. Just double-click the ".exe" file. If you are using an antivirus such as Windows Defender, it will show a warning - you can safely click "More info" and choose "Run anyway". Next time it should run without warning. Allow the program in your firewall for both private and public connections.
