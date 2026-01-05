@@ -36,8 +36,8 @@ Other alternative is to:
 ## To be done - Features wanted
 * Video tutorial + templates how to connect via OSC (coming soon)
 * Minor bug fixes
-* Test and fix if needed the MacOS audio interface -> create new release
-* Add Linux audio interface
+* Test on MacOS with audio card
+* Add Linux audio interface and test it (JACK?)
 * Add more animation types
 * Optimize performance (aka make it faster)
 * Add support for loading subwoofers automatically from preset
