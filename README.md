@@ -95,12 +95,12 @@ Under the hood, the tool is programmed in Processing Java. It uses VBAP - Vector
 Download [Processing](https://processing.org/) (originally made with version 4.3.4), download dependencies (see list of libraries below). Open the source and select File ->Export Application to build for your platform. Processing supports Windows, Linux, Apple, and Android; functionality depends on your hardware, and some changes might be needed. Read more at [Processing documentation](https://processing.org/environment/#export).  
 
 ### Libraries used
-* [OSCP5](https://github.com/sojamo/oscp5) - Open Sound Control protocol API
+* [OSCP5](https://github.com/trackme518/oscp5) - Open Sound Control protocol API (my modified fork to fix bugs and add additional features)
 * [LazyGui](https://github.com/KrabCode/LazyGui) - GUI package
 * [TUIO](https://github.com/mkalten/TUIO11_Processing) TUIO protocol API
 * [jHDF](https://github.com/jamesmudd/jhdf) Loading HDF files (.sofa)
 * [Jasio host](https://github.com/mhroth/jasiohost) - ASIO SDK (Windows) - tested, works
-* [JCoreAudio](https://github.com/mhroth/JCoreAudio/tree/master) CoreAudio SDK (MacOS) - untested
+* [JCoreAudio](https://github.com/trackme518/JCoreAudio) CoreAudio SDK (MacOS) - untested (my modified fork to support MacOS Silicone)
 * [jnajack](https://github.com/jaudiolibs/jnajack) - Linux Audio SDK, untested (probably does not work)
 
 ### Windows
