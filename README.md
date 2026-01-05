@@ -27,6 +27,8 @@ Tested on Windows 11. It should work out of the box. Just double-click the ".exe
 Apple forces developers to pay each year just to distribute signed apps - I don't like this. What you can do:
 * open terminal
 * run `xattr -d com.apple.quarantine /path/to/YourApp.app` that will remove the quarantine flag.
+To get rid of gatekeeper altogether run:
+* `sudo spctl --master-disable`
 
 Other alternative is to:
 * Righ-click the app
