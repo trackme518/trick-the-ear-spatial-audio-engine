@@ -35,6 +35,11 @@ Other alternative is to:
 * Righ-click the app
 * Click open, confirm the dialogue
 
+## How to help
+* First of all - use it, that's why i made it ;-). I would be very happy if you share the results with me - ie when and how you used it (I will feature it).
+* Contact me if you want it for commercial use (in the museum, concert hall, for the paid show)
+* Contribute to the project - you can have a look at features wanted below, fix a bug oyu find (or look into Issues), add new cool feature or just test with your hardware and report the findings (in the Issues or Discussion section). 
+* Donate money to support the development.
 
 ## To be done - Features wanted
 * Video tutorial + templates how to connect via OSC (coming soon)
