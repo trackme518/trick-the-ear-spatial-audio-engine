@@ -16,11 +16,9 @@ The App is a spatial audio engine and audio mixer all in one. You have multiple 
 [![Video demo showing various speaker topologies](./assets/screenshot1.png)](https://www.youtube.com/watch?v=s-aY4L8xGKc)
 
 ## Download
-* [Latest release](https://github.com/trackme518/trick-the-ear-spatial-audio-engine/releases)
+* Choose the right release for your OS, see [Latest release](https://github.com/trackme518/trick-the-ear-spatial-audio-engine/releases)
 
-MacOS and Linux builds will be added later.
-
-Download links provide a zipped archive with the tool. You don't need to install anything - unzip it and run the ".exe" file.
+Download links provide a zipped archive with the tool. You don't need to install anything - unzip it and run the ".exe" file on Windows or right-click the App on MacOS.
 
 ### Windows
 Tested on Windows 11. It should work out of the box. Just double-click the ".exe" file. If you are using an antivirus such as Windows Defender, it will show a warning - you can safely click "More info" and choose "Run anyway". Next time it should run without warning. Allow the program in your firewall for both private and public connections.
