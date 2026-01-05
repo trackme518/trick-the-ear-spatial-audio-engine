@@ -106,6 +106,15 @@ Download [Processing](https://processing.org/) (originally made with version 4.3
 ### Windows
 Tested on Windows 11. It should work out of the box. Just double-click the ".exe" file. If you are using an antivirus such as Windows Defender, it will show a warning - you can safely click "More info" and choose "Run anyway". Next time it should run without warning. Allow the program in your firewall for both private and public connections.
 
+### MacOS
+Apple forces developers to pay each year just to distribute signed apps - I don't like this. What you can do:
+* open terminal
+* run `xattr -d com.apple.quarantine /path/to/YourApp.app` that will remove the quarantine flag.
+
+Other alternative is to:
+* Righ-click the app
+* Click open, confirm the dialogue
+
 ## Acknowledgments
 Special thank you to:
 * [Pavel Husa](https://github.com/pavelhusa) for consultation
