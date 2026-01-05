@@ -22,6 +22,19 @@ MacOS and Linux builds will be added later.
 
 Download links provide a zipped archive with the tool. You don't need to install anything - unzip it and run the ".exe" file.
 
+### Windows
+Tested on Windows 11. It should work out of the box. Just double-click the ".exe" file. If you are using an antivirus such as Windows Defender, it will show a warning - you can safely click "More info" and choose "Run anyway". Next time it should run without warning. Allow the program in your firewall for both private and public connections.
+
+### MacOS
+Apple forces developers to pay each year just to distribute signed apps - I don't like this. What you can do:
+* open terminal
+* run `xattr -d com.apple.quarantine /path/to/YourApp.app` that will remove the quarantine flag.
+
+Other alternative is to:
+* Righ-click the app
+* Click open, confirm the dialogue
+
+
 ## To be done - Features wanted
 * Video tutorial + templates how to connect via OSC (coming soon)
 * Minor bug fixes
@@ -102,18 +115,6 @@ Download [Processing](https://processing.org/) (originally made with version 4.3
 * [Jasio host](https://github.com/mhroth/jasiohost) - ASIO SDK (Windows) - tested, works
 * [JCoreAudio](https://github.com/trackme518/JCoreAudio) CoreAudio SDK (MacOS) - untested (my modified fork to support MacOS Silicone)
 * [jnajack](https://github.com/jaudiolibs/jnajack) - Linux Audio SDK, untested (probably does not work)
-
-### Windows
-Tested on Windows 11. It should work out of the box. Just double-click the ".exe" file. If you are using an antivirus such as Windows Defender, it will show a warning - you can safely click "More info" and choose "Run anyway". Next time it should run without warning. Allow the program in your firewall for both private and public connections.
-
-### MacOS
-Apple forces developers to pay each year just to distribute signed apps - I don't like this. What you can do:
-* open terminal
-* run `xattr -d com.apple.quarantine /path/to/YourApp.app` that will remove the quarantine flag.
-
-Other alternative is to:
-* Righ-click the app
-* Click open, confirm the dialogue
 
 ## Acknowledgments
 Special thank you to:
