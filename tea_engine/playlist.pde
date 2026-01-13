@@ -8,48 +8,61 @@ class Playlists implements Runnable {
   boolean loaded = false;
   String[] allowedFileTypes = {".wav", ".ogg", ".mp3"}; //".aac" not working, .ogg takes long to load -it sbetter to use uncompressed .wav
 
+  String rootFolder; //where we load the playlists from by default
 
   String[] playlistsNames;
   ArrayList<Playlist>playlists = new  ArrayList<Playlist>();
   Playlist playlist;
+  String prevPlaylistName; //just to check if the playlist was changed
   int playlistIndex = 0;
 
   Playlists() {
     this.localThread = new Thread(this);
     this.startTime = millis();
     this.localThread.start();
+    this.rootFolder = dataPath("samples");
+  }
+
+  void setRootFolder(String val) {
+    this.rootFolder = val;
   }
   //--------------------
   //load files in separate thread
   void run() {
     this.loadPlaylists();
-    if ( this.playlists != null ) {
-      if (playlists.size()>0) {
-        this.playlist = playlists.get(0);
-        this.playlistsNames = getPlaylistsNames();
-      }
-    }
     this.loaded = true;
   }
 
   //--------------------
+  //run callback when finished
   void loadPlaylists() {
-    File[] files = listFiles( dataPath("samples") );
+    playlists.clear();//clear previous options, note we are not clearing the "playlist" yet
+    File[] files = listFiles( rootFolder );
     for (int i = 0; i < files.length; i++) {
       File f = files[i];
       if ( f.isDirectory() ) {
         loadPlaylist(f);
       }
     }
-    println(playlists.size()+" playlists loaded");
-    if (playlists.size()==0) {
-      playlists.add( new Playlist("No playlist found") );
+
+    if ( this.playlists != null ) {
+      if (playlists.size()>0) {
+        this.playlist = playlists.get(0);
+        this.playlistsNames = getPlaylistsNames();
+        println(playlists.size()+" playlists loaded.");
+      } else {
+        playlists.add( new Playlist("No playlist found") ); //we need something to avoid null pointer / problems down the line, provide placeholder
+      }
     }
   }
 
   void loadPlaylist(File f) {
     ArrayList<File> files = loadFilesFromDir(f.getAbsolutePath(), this.allowedFileTypes );
-    playlists.add( new Playlist(f, files) );
+    if (files != null && files.size() > 0) { // only add if folder contains audio files
+      playlists.add(new Playlist(f, files));
+    } else {
+      println("Skipping empty folder: " + f.getAbsolutePath());
+    }
   }
 
   String[] getPlaylistsNames() {

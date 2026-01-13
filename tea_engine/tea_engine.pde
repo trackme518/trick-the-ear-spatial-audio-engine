@@ -53,7 +53,7 @@ void setup() {
 
   presetGenerator = new PresetGenerator();
   spatialEngine = new SpatialAudio();
-  
+
   host = new AudioEngine();
   //host = new AsioHost();
 
@@ -89,8 +89,8 @@ void draw() {
   if ( !loadingStatus.initialized) {
     return;
   }
-  //------------------------------
-  //Record GUI
+
+  //==================Record GUI======================================
   gui.pushFolder("recorder");
   if (host.recordingEnabled) {
     gui.colorPickerSet("recording", color(255, 0, 0));
@@ -119,8 +119,8 @@ void draw() {
 
   host.recordingChannels = gui.sliderInt("channels:", host.recordingChannels, 1, 128);
   gui.popFolder();
-  //------------------------------
-  //Output GUI
+
+  //==================Output GUI======================================
   gui.pushFolder("output");
   String currDeviceName = gui.radio("device", host.deviceNames );
   host.binaural = gui.toggle("binaural", host.binaural);
@@ -193,8 +193,38 @@ void draw() {
   }
   gui.popFolder(); //end subwoofers
   gui.popFolder(); //end output
-  //-----------------------------------
-  //-----
+  //==================Playback GUI======================================
+
+  //select playlist
+  //String currPlaylist = gui.radio("playlist", new String[]{"square", "circle", "triangle"}, "square");
+  String currPlaylist = gui.radio("playback/playlist", playlists.playlistsNames, playlists.playlist.name);
+
+  if ( !currPlaylist.equals(playlists.prevPlaylistName) ) {
+    Playlist newPlaylist = playlists.getPlaylistByName(currPlaylist);
+    if (newPlaylist!=null) { //check that such playlist exists in the avaliable options
+      boolean playbackStarted = playlists.playlist.isPlaying; //remember if we are currently playing
+      playlists.playlist.stop(); //stop previous preset first
+      println("old playlist: "+playlists.playlist.name);
+      //hide previous GUI states
+      for (int t=0; t< playlists.playlist.samples.size(); t++) {
+        Track track = playlists.playlist.samples.get(t);
+
+        println(gui.getFolder());
+        gui.hide("Tracks/"+track.name); //this affects on the root level since i did not use pushFolder("x") before here
+        println("hide "+track.name);
+      }
+
+      playlists.playlist = newPlaylist; //assgin selected playlist
+      playlists.prevPlaylistName = currPlaylist;
+      println("new playlist: "+playlists.playlist.name);
+      if (playbackStarted) { //if we were playing the previous playing. strat playing the new one instantly
+        playlists.playlist.play();
+      }
+    }
+  }
+
+  gui.pushFolder("playback");
+
   if ( gui.button("play") ) {
     playlists.playlist.play();
   }
@@ -222,45 +252,54 @@ void draw() {
   if (playlists.playlist.loopStems != _loopStems) {
     playlists.playlist.setLoopStems(_loopStems);
   }
-  //-----
-  //select playlist
-  String currPlaylist = gui.radio("playlist", playlists.playlistsNames, playlists.playlist.name);
 
-  if ( !currPlaylist.equals(playlists.playlist.name) ) {
-    boolean playbackStarted = playlists.playlist.isPlaying; //remember if we are currently playing
-    playlists.playlist.stop(); //stop previous preset first
-
-    //hide previous GUI states
-    for (int t=0; t< playlists.playlist.samples.size(); t++) {
-      Track track = playlists.playlist.samples.get(t);
-      gui.hide("Tracks/"+track.name);
+  //provide user with two options to set the root folder - by copy paste into text field / manual typing
+  gui.textSet("playlists root", playlists.rootFolder);
+  //using file explorer picker
+  if (gui.button("choose folder") ) {
+    // Assign callback to the function
+    selectFolder((File newDir) -> {
+      if (newDir != null) {
+        playlists.rootFolder = newDir.getAbsolutePath();
+        playlists.loadPlaylists();
+        // Safe GUI update
+        gui.radioSetOptions("playback/playlist", playlists.playlistsNames);
+        gui.radioSet("playback/playlist", playlists.playlist.name);
+        println("Default playlist folder set to " + newDir.getAbsolutePath());
+      } else {
+        println("Folder selection canceled.");
+      }
     }
-
-    playlists.playlist = playlists.getPlaylistByName(currPlaylist);
-
-
-    if (playbackStarted) { //if we were playing the previous playing. strat playing the new one instantly
-      playlists.playlist.play();
-    }
+    );
   }
-  //----------------------------
-  //OSC options
-  int _currOscPort = int( gui.slider("OSC/listen port", osc.oscPort) );
+
+  if (gui.button("scan folder") ) {
+    playlists.loadPlaylists();
+    gui.radioSetOptions("playback/playlist", playlists.playlistsNames);
+    gui.radioSet("playback/playlist", playlists.playlist.name);
+  }
+
+
+  gui.popFolder();
+
+  //==================OSC GUI======================================
+  gui.pushFolder("OSC");
+  int _currOscPort = int( gui.slider("listen port", osc.oscPort) );
   if ( _currOscPort != osc.oscPort) {
     println("set osc port");
     osc.setPort( _currOscPort );
   }
-  //-----------------------------
+  gui.popFolder();
+
+  //==================Tracks GUI======================================
 
   //enable user control when switched to manual - good for debugging
   //!warning - subwoofer channel is NOT affected as it gets calculated directly in host...maybe i can fix this later
-  gui.pushFolder("Tracks");
-
-
+  gui.pushFolder("Tracks" );
   for (int t=0; t< playlists.playlist.samples.size(); t++) {
     Track track = playlists.playlist.samples.get(t);
-    gui.show(track.name);
 
+    gui.show(track.name);
     //if ( track.gains !=null) {
     gui.pushFolder(track.name);
 
@@ -288,7 +327,8 @@ void draw() {
 
 
     for (int i=0; i< 128; i++) {
-      String guiPath = "gain_" + i;
+      String guiPath = "gain_"+ i;
+      //String guiPath = "Tracks/"+track.name+"gain_"+ i;
       if (i<host.outputBuffers.size()) {
         //for (int i=0; i< host.activeChannels.size(); i++) {
         gui.show(guiPath);
@@ -311,8 +351,8 @@ void draw() {
   }
   gui.popFolder();//end for all Tracks
 
-  //--------------------------------------
-  //GUI Spatial Audio Engine settings
+  //==================Spatial Audio GUI======================================
+
   gui.pushFolder("Spatial Engine");
   String selectedPresetName = gui.radio("preset:", spatialEngine.presetNames, spatialEngine.preset.name );
   //if (!gui.isMouseOutsideGui() ) {//only when hovering over GUI - it collided with OSC API
@@ -345,10 +385,8 @@ void draw() {
     spatialEngine.mode = spatialEngine.EUCLIDIAN;
   }
   gui.popFolder();
-  //--------------------------------------
 
-
-  //----------------------------------------------------------------------------------
+  //==================RENDER DRAW LOOP ======================================
 
   canvas.beginDraw();
   canvas.clear();

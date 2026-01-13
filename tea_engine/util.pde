@@ -1,5 +1,5 @@
 //various helper functions
-
+import javax.swing.JFileChooser;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -27,24 +27,43 @@ void openFolder(String folderPath) {
     println("Desktop not supported on this system.");
   }
 }
+
+// Folder chooser function
+// Run folder chooser in a separate thread
+void selectFolder(java.util.function.Consumer<File> callback) {
+  new Thread(() -> {
+    JFileChooser chooser = new JFileChooser();
+    chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+    int result = chooser.showOpenDialog(null);
+    File selected = null;
+    if (result == JFileChooser.APPROVE_OPTION) {
+      selected = chooser.getSelectedFile();
+    }
+    final File folder = selected;
+    // Run callback safely on Processing main thread
+    javax.swing.SwingUtilities.invokeLater(() -> callback.accept(folder));
+  }).start();
+}
 //-----------------------------
-ArrayList<File> loadFilesFromDir( String path, String[] filterExtension ) {
-  ArrayList<File>foundfiles = new ArrayList<File>();
-  if (!Files.exists( Paths.get(path) )) {
-    println("directory does NOT exists: "+path);
-    return foundfiles;
+ArrayList<File> loadFilesFromDir(String path, String[] filterExtension) {
+  ArrayList<File> foundFiles = new ArrayList<File>();
+  if (!Files.exists(Paths.get(path))) {
+    println("Directory does NOT exist: " + path);
+    return foundFiles;
   }
-  File root = new File( path );
+  File root = new File(path);
   File[] list = root.listFiles();
-  for ( File f : list ) {
-    String currpath = f.getAbsolutePath();
-    for (int i=0; i<filterExtension.length; i++) {
-      if ( currpath.endsWith(filterExtension[i])) {
-        foundfiles.add(f);
+  if (list == null) return foundFiles;
+  for (File f : list) {
+    String currPathLower = f.getAbsolutePath().toLowerCase();
+    for (String ext : filterExtension) {
+      if (currPathLower.endsWith(ext.toLowerCase())) {
+        foundFiles.add(f);
+        break; // stop checking other extensions
       }
     }
   }
-  return foundfiles;
+  return foundFiles;
 }
 //-----------------------------
 boolean validateJson(JSONObject json, String[] params) {
