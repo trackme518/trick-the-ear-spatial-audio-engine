@@ -84,12 +84,12 @@
       "index": 8,
       "lfe": true,
       "position_normalized": [
-        0.7071070075035095,
-        -0.7071065306663513,
+        0.25,
+        0.25,
         0
       ],
-      "label": "sub"
+      "label": "subwoofer"
     }
   ],
-  "name": "circle 8.1"
+  "name": "Circular 8.1"
 }

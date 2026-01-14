@@ -40,16 +40,16 @@
       ],
       "label": "3"
     },
-     {
+    {
       "index": 4,
       "lfe": true,
       "position_normalized": [
-        0.0,
-        0.0,
-        0.0
+        0.25,
+        0.25,
+        0
       ],
-      "label": "sub"
+      "label": "subwoofer"
     }
   ],
-  "name": "quad 4.1"
+  "name": "Quad 4.1"
 }

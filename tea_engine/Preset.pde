@@ -32,7 +32,7 @@ class Preset {
 
     JSONArray jsonArr = this.json.getJSONArray( "speakers" );
     this.subChannels.clear();
-    
+
     for (int i=0; i<jsonArr.size(); i++) {
       JSONObject speakerObject = jsonArr.getJSONObject(i);
       int index = speakerObject.getInt("index");
@@ -208,18 +208,22 @@ class PresetGenerator {
     } else if (mode.equals("rectangular")) {
       speakers = generateRectangularSpeakers(rows, cols, layoutWidth, layoutHeight);
     }
+    speakers.add(new Speaker( speakers.size(), new PVector(0.25, 0.25, 0), "subwoofer", true ) ); //add subwoofer as an example
     return new Preset(name, speakers);
   }
 
+  /*
   ArrayList<Speaker> generateSpeakers() {
-    ArrayList<Speaker> speakers = new ArrayList<Speaker>();
-    if (mode.equals("circular")) {
-      speakers = generateCircularSpeakers(this.numSpeakers);
-    } else if (mode.equals("rectangular")) {
-      speakers = generateRectangularSpeakers(rows, cols, layoutWidth, layoutHeight);
-    }
-    return speakers;
-  }
+   ArrayList<Speaker> speakers = new ArrayList<Speaker>();
+   if (mode.equals("circular")) {
+   speakers = generateCircularSpeakers(this.numSpeakers);
+   } else if (mode.equals("rectangular")) {
+   speakers = generateRectangularSpeakers(rows, cols, layoutWidth, layoutHeight);
+   }
+   speakers.add(new Speaker( speakers.size(), new PVector(0.25,0.25,0), "subwoofer", true ) ); //add subwoofer as an example
+   return speakers;
+   }
+   */
 
   void drawGui() {
     String currName = gui.text("name", "new preset");
