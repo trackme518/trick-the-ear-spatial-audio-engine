@@ -9,6 +9,8 @@ class Preset {
   String name;
   int hash;
   ArrayList<Speaker> speakers = new ArrayList<Speaker>();
+  //subset of speakers - just a helper reference with channel indeces for subwoofers, help inside AudioEngine host instance
+  ArrayList<Integer> subChannels = new ArrayList<>();
 
   PShape convexHull; //I am constructing the PSahpe as if it was an .obj => each face is a child of parent object and it consists of three points ie triangle
   float convexHullDia;//max distance from center to outermost vertex of the convexHull shape - used for max range of neighbour distance between boids
@@ -29,22 +31,21 @@ class Preset {
 
 
     JSONArray jsonArr = this.json.getJSONArray( "speakers" );
-
+    this.subChannels.clear();
+    
     for (int i=0; i<jsonArr.size(); i++) {
       JSONObject speakerObject = jsonArr.getJSONObject(i);
+      int index = speakerObject.getInt("index");
+      String label = str(index);
 
       boolean lfe = false;
       //ignoring lfe speakers for now here
-      if (!speakerObject.isNull("lfe")) {
+      if (speakerObject.hasKey("lfe")) {
         lfe = speakerObject.getBoolean("lfe");
         if ( lfe ) {
-          println("ignoring lfe / subwoofer in the preset");
-          continue;
+          this.subChannels.add(index);
         }
       }
-
-      int index = speakerObject.getInt("index");
-      String label = str(index);
 
       if (!speakerObject.isNull("label")) {
         label = speakerObject.getString("label");
@@ -70,6 +71,9 @@ class Preset {
     ArrayList<PVector> points = new ArrayList<PVector>();
     for (int i=0; i<speakers.size(); i++) {
       Speaker currSpeaker = speakers.get(i);
+      if (currSpeaker.lfe) {
+        continue; //ignore subwoorfers when calculating convexHull
+      }
       points.add(  new PVector(currSpeaker.position.x, currSpeaker.position.y, currSpeaker.position.z) );
     }
     this.convexHull = hull.calculateConvexHull(points);
@@ -145,7 +149,7 @@ class Preset {
     for (Speaker sp : speakers) {
       JSONObject spObj = new JSONObject();
       spObj.setInt("index", sp.index);
-      
+
       spObj.setString("label", sp.label);
       spObj.setBoolean("lfe", sp.lfe);
 
@@ -163,7 +167,7 @@ class Preset {
 
     // Determine output file path
     String safeName = this.name.replaceAll("\\s+", "_");
-    
+
     String filePath = dirPath + File.separator + safeName + ".json";
     saveJSONObject(presetJSON, filePath);
 
@@ -230,7 +234,7 @@ class PresetGenerator {
 
     if (gui.button("generate")) {
       Preset currPreset = this.generatePreset(currName);
-      this.addToEngine( spatialEngine, currPreset );
+      this.addToEngine( host.spatialEngine, currPreset );
     }
   }
 

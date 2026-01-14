@@ -142,9 +142,14 @@ public class SpatialAudio {//implements Runnable
     }
 
     for (int i = 0; i < this.speakers.size(); i++) {
+      Speaker speaker = this.speakers.get(i);
+      if (speaker.lfe) {
+        continue; //ignore subwoofers
+      }
+      
       float val;
       if (mode == DOT_PRODUCT) {
-        val = PVector.dot(desiredDirection, this.speakers.get(i).position);
+        val = PVector.dot(desiredDirection, speaker.position);
         for (int prev : prevIndices) {
           if (i == prev) {
             val += selectionBias;
@@ -152,7 +157,7 @@ public class SpatialAudio {//implements Runnable
           }
         }
       } else {
-        val = PVector.dist(desiredDirection, this.speakers.get(i).position);
+        val = PVector.dist(desiredDirection, speaker.position);
         for (int prev : prevIndices) {
           if (i == prev) {
             val -= selectionBias;
@@ -207,11 +212,8 @@ public class SpatialAudio {//implements Runnable
     return gainMap;
   }
 
-
-
   HashMap<Integer, Float> getGains2D(int sourceId, PVector _v) {
     PVector desiredDirection = PVector.div(_v.copy(), renderScale);
-    float[] gains = new float[this.speakers.size()];
     // --- 2D Ring-Based Interpolation ---
     float sourceAngle = atan2(desiredDirection.y, desiredDirection.x);
 
@@ -226,6 +228,7 @@ public class SpatialAudio {//implements Runnable
 
     ArrayList<SpeakerAngle> speakerAngles = new ArrayList<SpeakerAngle>();
     for (Speaker s : this.speakers) {
+      if (s.lfe) continue; //ignore subwoofers
       speakerAngles.add(new SpeakerAngle(s));
       s.gain = 0;
     }
@@ -274,16 +277,12 @@ public class SpatialAudio {//implements Runnable
     //Build HashMap result with nonzero gains ---
     HashMap<Integer, Float> gainMap = new HashMap<>();
     for (Speaker s : this.speakers) {
+      if (s.lfe) continue; //ignore subwoofers
       if (s.gain > 0) {
         gainMap.put(s.index, s.gain);
       }
     }
-    /*
-    for (int i = 0; i < this.speakers.size(); i++) {
-     gains[i] = this.speakers.get(i).gain;
-     }
-     */
-    //return gains;
+
     return gainMap;
   }
 
@@ -291,36 +290,25 @@ public class SpatialAudio {//implements Runnable
 
   void render(PGraphics screen) {
     screen.beginDraw();
-    /*
-    screen.pushMatrix();
-     screen.scale(this.renderScale);
-     screen.shape( preset.convexHull );
-     screen.popMatrix();
-     */
-
-    //screen.pushStyle();
 
     for (int i=0; i<speakers.size(); i++ ) {
       Speaker speaker = speakers.get(i);
       speaker.render(this.renderScale, screen);
     }
-    //screen.popStyle();
-    //screen.lights();
-
 
     if (this.showConvexHull) {
       screen.noLights();
       screen.pushMatrix();
       screen.scale(this.renderScale);
-      
+
       screen.hint(DISABLE_DEPTH_MASK);
-      
+
       screen.shape( this.preset.convexHull );
       renderConvexHullEdges(screen, this.preset.convexHull);
-      
+
       screen.hint(ENABLE_DEPTH_MASK);
-      
-      screen.popMatrix();   
+
+      screen.popMatrix();
       screen.lights();
     }
 
@@ -333,7 +321,7 @@ public class SpatialAudio {//implements Runnable
       screen.translate( centroidPos.x, centroidPos.y, centroidPos.z );
       screen.fill(200, 200, 0);
       screen.noStroke();
-      
+
       //screen.sphereDetail(6);
       screen.sphere(15);
       screen.popMatrix();
@@ -416,8 +404,12 @@ class Speaker {
     screen.fill(255);
     screen.stroke(255);
 
-    //draw3DLabel(this.label, this.position, _scale, 24, 20, 0, screen);
-    draw3DLabel(str(index), position, _scale, 24, 50, 0, screen); //see util
+    String label = str(index);
+    if (this.lfe) {
+      label = label+" subwoofer";
+    }
+
+    draw3DLabel(label, position, _scale, 24, 50, 0, screen); //see util
     //screen.endDraw();
   }
 }

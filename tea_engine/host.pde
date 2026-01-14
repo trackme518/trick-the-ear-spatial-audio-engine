@@ -51,7 +51,7 @@ class AudioEngine {
   double sampleRate;
 
   ArrayList<float[]> outputBuffers = new ArrayList<>();
-  ArrayList<Integer> subChannels = new ArrayList<>();
+  //ArrayList<Integer> subChannels = new ArrayList<>();
 
   BiquadFilter subLowpass;
 
@@ -63,13 +63,16 @@ class AudioEngine {
 
   SharedHrtfContext sharedHRTF;
 
+  SpatialAudio spatialEngine;
+
   AudioBackend backend; //depends on current OS, on Windows use ASIO
   String[] deviceNames; //string names of avaliable devices
 
-
-
   // ===================== CONSTRUCTOR =====================
   AudioEngine() {
+
+    spatialEngine = new SpatialAudio();
+
     if (platform == WINDOWS) {
       println("Running on Windows");
       backend = new AsioBackend();
@@ -225,7 +228,7 @@ class AudioEngine {
       return;
     }
 
-    // === TRACK PROCESSING ===
+    // === TRACK PROCESSING ============================
     for (Track currTrack : playlists.playlist.samples) {
 
       if (!currTrack.isPlaying() || currTrack.mute) continue;
@@ -262,7 +265,7 @@ class AudioEngine {
         continue;
       }
 
-      // normal multichannel
+      //--normal multichannel-------------------------
       for (int c = 0; c < channelCount; c++) {
         float gain = currTrack.getGain(c);
         if (currTrack.mute) gain = 0f;
@@ -272,8 +275,8 @@ class AudioEngine {
       }
     }
 
-    // subwoofer
-    if (applyLowpass && !binaural && !subChannels.isEmpty()) {
+    // === Subwoofer low pass ==========================
+    if (applyLowpass && !binaural && !spatialEngine.preset.subChannels.isEmpty()) {
       float[] sub = new float[bufferSize];
       for (int i = 0; i < bufferSize; i++) {
         float mixed = 0;
@@ -281,10 +284,16 @@ class AudioEngine {
         mixed /= channelCount;
         sub[i] = subLowpass.process(mixed);
       }
-      for (int idx : subChannels) {
+      //for (int idx : spatialEngine.preset.subChannels) {
+      for (int idx : spatialEngine.preset.subChannels) {
+        if (idx < 0 || idx >= outputBuffers.size()) {
+          //println("Invalid sub channel index: " + idx); //higher than avaliable channels out
+          continue;
+        }
         outputBuffers.set(idx, sub);
       }
     }
+    //----end for subwoofers-----------------------------
 
     write(outputs);
     this.sampleIndex += this.bufferSize; //Increment global sample index

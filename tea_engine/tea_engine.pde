@@ -37,7 +37,7 @@ boolean syncRecToPlay = false;
 //---------------------
 
 PGraphics canvas; //offscreen render texture for 3D speakers visualization
-SpatialAudio spatialEngine;
+//SpatialAudio spatialEngine;
 PresetGenerator presetGenerator;
 
 int _width, _height; //keep track of sketch dimensions in case of resize event
@@ -52,7 +52,7 @@ void setup() {
   canvas = createGraphics(width, height, P3D);
 
   presetGenerator = new PresetGenerator();
-  spatialEngine = new SpatialAudio();
+  //spatialEngine = new SpatialAudio();
 
   host = new AudioEngine();
   //host = new AsioHost();
@@ -150,7 +150,7 @@ void draw() {
   gui.pushFolder("subwoofers");
   host.applyLowpass = gui.toggle("lowpass", host.applyLowpass);
 
-  int subCount = gui.sliderInt("count", 1, 1, 16);
+  //int subCount = gui.sliderInt("count", 1, 1, 16);
 
   float currCutoff = gui.slider("cuttoff", 120, 0, 250);
   if (host.subLowpass!=null) {
@@ -165,30 +165,13 @@ void draw() {
     host.subLowpass.setVolume( bassVolume );
   }
 
-  for (int i=0; i<subCount; i++) {
-    int channelIndex = gui.sliderInt("sub_"+i+"/channel", 0, 0, 64 );//-1 means disabled
-
-    if (host.outputBuffers.size() > 0) {
-      if (channelIndex>=host.outputBuffers.size()-1) {
-        gui.sliderSet("sub_"+i+"/channel", host.outputBuffers.size()-1);
-        break;
-      }
-    }
-
-    if ( host.subChannels.size()<=i ) {
-      host.subChannels.add( channelIndex );
-      gui.show("sub_"+i);
+  for (int i=0; i<16; i++) {
+    if ( host.spatialEngine.preset.subChannels.size()<=i ) {
+      gui.hide("sub_"+i);
+      break;
     } else {
-      host.subChannels.set(i, channelIndex); //immutable
-    }
-  }
-  if (subCount<host.subChannels.size()) {
-    // remove extra speakers if subCount decreased
-    while (host.subChannels.size() > subCount) {
-      int index = host.subChannels.size() - 1;
-      //println("removing "+index);
-      host.subChannels.remove(index);
-      gui.hide("sub_"+index);
+      gui.show("sub_"+i);
+      gui.sliderIntSet("sub_"+i+"/channel", host.spatialEngine.preset.subChannels.get(i) );
     }
   }
   gui.popFolder(); //end subwoofers
@@ -354,16 +337,16 @@ void draw() {
   //==================Spatial Audio GUI======================================
 
   gui.pushFolder("Spatial Engine");
-  String selectedPresetName = gui.radio("preset:", spatialEngine.presetNames, spatialEngine.preset.name );
+  String selectedPresetName = gui.radio("preset:", host.spatialEngine.presetNames, host.spatialEngine.preset.name );
   //if (!gui.isMouseOutsideGui() ) {//only when hovering over GUI - it collided with OSC API
-  if ( !selectedPresetName.equals(spatialEngine.preset.name) ) { //on change hack
-    spatialEngine.getPresetByName( selectedPresetName ); //use selected preset
+  if ( !selectedPresetName.equals(host.spatialEngine.preset.name) ) { //on change hack
+    host.spatialEngine.getPresetByName( selectedPresetName ); //use selected preset
     //flock1.set2D(spatialEngine.preset.is2D);
   }
 
-  spatialEngine.showConvexHull = gui.toggle("show hull", spatialEngine.showConvexHull);
-  spatialEngine.powerSharpness = gui.slider("sharpness", spatialEngine.powerSharpness, 1, 5);
-  spatialEngine.selectionBias = gui.slider("stickiness", spatialEngine.selectionBias, 0.0f, 0.5);
+  host.spatialEngine.showConvexHull = gui.toggle("show hull", host.spatialEngine.showConvexHull);
+  host.spatialEngine.powerSharpness = gui.slider("sharpness", host.spatialEngine.powerSharpness, 1, 5);
+  host.spatialEngine.selectionBias = gui.slider("stickiness", host.spatialEngine.selectionBias, 0.0f, 0.5);
 
   //----------------------------------------
   //generate new preset with dynamic functions - see SpatialEngine tab
@@ -380,9 +363,9 @@ void draw() {
 
   String spatialMode = gui.radio("spatial mode", new String[]{"dot product", "euclidian"}, "euclidian");
   if (spatialMode.equals("dot product")) {
-    spatialEngine.mode = spatialEngine.DOT_PRODUCT;
+    host.spatialEngine.mode = host.spatialEngine.DOT_PRODUCT;
   } else {
-    spatialEngine.mode = spatialEngine.EUCLIDIAN;
+    host.spatialEngine.mode = host.spatialEngine.EUCLIDIAN;
   }
   gui.popFolder();
 
@@ -395,7 +378,7 @@ void draw() {
   }
   canvas.endDraw();
 
-  spatialEngine.render(canvas); //it will intrenally check for preset change as well
+  host.spatialEngine.render(canvas); //it will intrenally check for preset change as well
   cam.getState().apply(canvas);
 
   image(canvas, 0, 0);

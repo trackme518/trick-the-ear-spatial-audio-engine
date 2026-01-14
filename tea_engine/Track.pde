@@ -55,7 +55,7 @@ class Track {
     this.path = _f.getAbsolutePath();
 
 
-    this.virtualSource = new VirtualSource(this.index, spatialEngine, new PVector(0, 0, 0) );
+    this.virtualSource = new VirtualSource(this.index, host.spatialEngine, new PVector(0, 0, 0) );
 
     try {
       // Open audio stream
