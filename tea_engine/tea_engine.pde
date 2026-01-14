@@ -10,6 +10,12 @@
  For commercial licensing, please contact us.
  */
 
+/*
+TBD
+* add GUI for assigning binaural channels (currently always first two channels) + adjust host algo for that
+* instead of choosing playlists folder - adjust the whole root dataPath (handy on MacOS where data folder is hidden by default)
+*/
+
 
 String windowTitle = "Trick the Ear - Audio Engine v1.0";
 
