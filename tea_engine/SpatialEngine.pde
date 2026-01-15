@@ -54,7 +54,10 @@ public class SpatialAudio {//implements Runnable
   }
 
   void loadPresets() {
-    ArrayList<File>datafiles =  loadFilesFromDir( dataPath(settingsDir), ".json" );
+    this.presets.clear();
+    this.presetNames.clear();
+
+    ArrayList<File>datafiles =  loadFilesFromDir( (rootFolder+File.separator+settingsDir), ".json" );
     for (int i=0; i<datafiles.size(); i++) {
       try {
         Preset newPreset = new Preset(datafiles.get(i));

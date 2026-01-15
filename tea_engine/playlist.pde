@@ -25,6 +25,7 @@ class Playlists implements Runnable {
 
   void setRootFolder(String val) {
     this.rootFolder = val;
+    this.loadPlaylists(); //load playlists at new dir
   }
   //--------------------
   //load files in separate thread

@@ -1,6 +1,6 @@
 //let user define .json presets for speaker positions and channels
 
-String speakerPresetsDir = "speaker_presets";
+//String speakerPresetsDir = "speaker_presets";
 
 class Preset {
 
@@ -137,7 +137,7 @@ class Preset {
   // Save this preset to JSON file
   void saveToJSON(String dirPath) {
     // Create folder if it doesn't exist
-    File dir = new File(dataPath(dirPath));
+    File dir = new File(dirPath);
     if (!dir.exists()) {
       dir.mkdirs();
     }

@@ -5,6 +5,44 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.awt.Desktop;
+//--------------------------------
+
+void setRootFolder(String pathToDir) {
+  if (host==null) {
+    println("host null");
+  }
+  playlists.setRootFolder(pathToDir);
+  host.setRecordingPath(pathToDir);
+  host.spatialEngine.loadPresets();
+  saveSettings();
+}
+
+//load global settings
+void loadSettings() {
+  File globalConfig = new File( dataPath("config.json") );
+  if (globalConfig.exists()) {
+    try {
+      JSONObject globalSetting = loadJSONObject( globalConfig );
+      if (globalSetting.hasKey("rootFolder")) {
+        rootFolder = globalSetting.getString("rootFolder");
+      }
+    }
+    catch(Exception e) {
+      println(e);
+    }
+  } else {
+    rootFolder = dataPath("");
+    saveSettings();
+  }
+}
+
+void saveSettings() {
+  JSONObject globalSetting = new JSONObject();
+  globalSetting.setString("rootFolder", rootFolder);
+  saveJSONObject(globalSetting, dataPath("config.json") );
+}
+
+
 //----------------------------------
 void openFolder(String folderPath) {
   if (folderPath==null) {
@@ -42,7 +80,8 @@ void selectFolder(java.util.function.Consumer<File> callback) {
     final File folder = selected;
     // Run callback safely on Processing main thread
     javax.swing.SwingUtilities.invokeLater(() -> callback.accept(folder));
-  }).start();
+  }
+  ).start();
 }
 //-----------------------------
 ArrayList<File> loadFilesFromDir(String path, String[] filterExtension) {
@@ -271,5 +310,5 @@ float shortestDistanceToPlane(PVector pointOnPlane, PVector normal, PVector targ
 }
 //-------------------------------------
 public static String[] getEnumNames(Class<? extends Enum<?>> e) {
-    return Arrays.stream(e.getEnumConstants()).map(Enum::name).toArray(String[]::new);
+  return Arrays.stream(e.getEnumConstants()).map(Enum::name).toArray(String[]::new);
 }

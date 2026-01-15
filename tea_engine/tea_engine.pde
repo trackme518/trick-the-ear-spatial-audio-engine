@@ -12,12 +12,11 @@
 
 /*
 TBD
-* add GUI for assigning binaural channels (currently always first two channels) + adjust host algo for that
-* instead of choosing playlists folder - adjust the whole root dataPath (handy on MacOS where data folder is hidden by default)
-*/
+ * add GUI for assigning binaural channels (currently always first two channels) + adjust host algo for that
+ */
 
 
-String windowTitle = "Trick the Ear - Audio Engine v1.0";
+String windowTitle = "Trick the Ear - Audio Engine v1.3";
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -35,6 +34,8 @@ import com.krab.lazy.*;
 LazyGui gui;
 
 float fps = 0; //running average
+
+String rootFolder; //where we save config, playlists, recordings, presets, etc., by default it is data folder inside the project
 //------------------------------
 String[] playbackModes = {"play once", "play all", "loop one", "loop all"};
 String[] generatePresetModes = {"circular", "rectangular"};
@@ -52,6 +53,9 @@ void setup() {
   size(1280, 1024, P2D);
   pixelDensity(displayDensity());
   context = this;
+
+  loadSettings(); //load supeglobal settings that are independant from GUI saves from data folder. see util fce
+
   //surface.setTitle(windowTitle);
   frameRate(500);
 
@@ -95,6 +99,33 @@ void draw() {
   if ( !loadingStatus.initialized) {
     return;
   }
+
+  //using file explorer picker
+  if (gui.button("choose folder") ) {
+    // Assign callback to the function
+    selectFolder((File newDir) -> {
+      if (newDir != null) {
+        rootFolder = newDir.getAbsolutePath();
+        playlists.setRootFolder(rootFolder);
+        setRootFolder(rootFolder); //change recordings path, playlist path
+        // Safe GUI update
+        gui.radioSetOptions("playback/playlist", playlists.playlistsNames);
+        gui.radioSet("playback/playlist", playlists.playlist.name);
+
+        gui.radioSetOptions("Spatial Engine/preset", host.spatialEngine.presetNames);
+        gui.radioSet("Spatial Engine/preset", host.spatialEngine.preset.name);
+
+
+        println("Default playlist folder set to " + rootFolder);
+      } else {
+        println("Folder selection canceled.");
+      }
+    }
+    );
+  }
+
+  //provide user with option to set the root folder - where we load playlist, presets, save recordings etc.
+  gui.textSet("root folder", rootFolder);
 
   //==================Record GUI======================================
   gui.pushFolder("recorder");
@@ -242,26 +273,6 @@ void draw() {
     playlists.playlist.setLoopStems(_loopStems);
   }
 
-  //provide user with two options to set the root folder - by copy paste into text field / manual typing
-  gui.textSet("playlists root", playlists.rootFolder);
-  //using file explorer picker
-  if (gui.button("choose folder") ) {
-    // Assign callback to the function
-    selectFolder((File newDir) -> {
-      if (newDir != null) {
-        playlists.rootFolder = newDir.getAbsolutePath();
-        playlists.loadPlaylists();
-        // Safe GUI update
-        gui.radioSetOptions("playback/playlist", playlists.playlistsNames);
-        gui.radioSet("playback/playlist", playlists.playlist.name);
-        println("Default playlist folder set to " + newDir.getAbsolutePath());
-      } else {
-        println("Folder selection canceled.");
-      }
-    }
-    );
-  }
-
   if (gui.button("scan folder") ) {
     playlists.loadPlaylists();
     gui.radioSetOptions("playback/playlist", playlists.playlistsNames);
@@ -343,7 +354,7 @@ void draw() {
   //==================Spatial Audio GUI======================================
 
   gui.pushFolder("Spatial Engine");
-  String selectedPresetName = gui.radio("preset:", host.spatialEngine.presetNames, host.spatialEngine.preset.name );
+  String selectedPresetName = gui.radio("preset", host.spatialEngine.presetNames, host.spatialEngine.preset.name );
   //if (!gui.isMouseOutsideGui() ) {//only when hovering over GUI - it collided with OSC API
   if ( !selectedPresetName.equals(host.spatialEngine.preset.name) ) { //on change hack
     host.spatialEngine.getPresetByName( selectedPresetName ); //use selected preset

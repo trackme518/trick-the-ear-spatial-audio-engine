@@ -58,7 +58,7 @@ class AudioEngine {
   ChannelRecorder[] recorders;
   boolean recordingEnabled = false;
   int recordingChannels = 8;
-  String recordingsPath = dataPath("recordings");
+  String recordingsPath = dataPath("recordings"); //can be changed with setRecordingPath 
   String lastRecordingPath = recordingsPath;
 
   SharedHrtfContext sharedHRTF;
@@ -93,6 +93,10 @@ class AudioEngine {
     if (!folder.exists()) {
       folder.mkdirs();
     }
+  }
+
+  void setRecordingPath(String val) {
+    recordingsPath = val;
   }
 
   //only when the device is opened we start the engine
