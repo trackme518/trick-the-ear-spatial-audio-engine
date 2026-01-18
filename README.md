@@ -37,6 +37,7 @@ Other alternative is to:
 
 ## How to help
 * First of all - use it, that's why i made it ;-). I would be very happy if you share the results with me - ie when and how you used it (I will feature it).
+* Star this repository
 * Contact me if you want it for commercial use (in the museum, concert hall, for the paid show)
 * Contribute to the project - you can have a look at features wanted below, fix a bug oyu find (or look into Issues), add new cool feature or just test with your hardware and report the findings (in the Issues or Discussion section). 
 * Donate money to support the development.
@@ -48,9 +49,9 @@ Other alternative is to:
 * Add Linux audio interface and test it (JACK?)
 * Add more animation types
 * Optimize performance (aka make it faster)
-* Add support for loading subwoofers automatically from preset
 * Let user set binaural output channels manually
 * Add visualization for circular animation trajectories
+* Add OSC API for loading new playlist
 
 ## Speakers preset
 Place your speaker preset in `.JSON` format inside the `data/speaker_presets` folder. 
