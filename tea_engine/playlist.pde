@@ -103,10 +103,10 @@ class Playlists implements Runnable {
         return; //do nothing - stops playback
       }
     } else {
-      println( this.playlistIndex + " : " + this.playlists.get(this.playlistIndex).name );
+      //println( this.playlistIndex + " : " + this.playlists.get(this.playlistIndex).name );
       this.playlistIndex++;
-      println("iterate over next playlist "+this.playlistIndex);
-      println( this.playlistIndex + " : " + this.playlists.get(this.playlistIndex).name );
+      //println("iterate over next playlist "+this.playlistIndex);
+      //println( this.playlistIndex + " : " + this.playlists.get(this.playlistIndex).name );
     }
     this.setNewPlaylist( this.playlists.get(this.playlistIndex), true );
   }
