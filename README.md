@@ -87,6 +87,8 @@ You can also directly set individual gains for each track and channel (effective
 | ---------- | ------- | ---- |----- |----- |----- |----- |
 |/gains | iifififif... | 0 (1st track) | 5 | 0.368 | 1 | 0.98 |
 
+Here are some generic trigger commands. 
+
 | OSCaddress | typetag | Value |
 | ---------- | ------- | ---- |
 |/play | b | True |
