@@ -25,6 +25,7 @@ void loadSettings() {
       JSONObject globalSetting = loadJSONObject( globalConfig );
       if (globalSetting.hasKey("rootFolder")) {
         rootFolder = globalSetting.getString("rootFolder");
+        println("root folder set to: "+rootFolder);
       }
     }
     catch(Exception e) {
@@ -32,6 +33,7 @@ void loadSettings() {
     }
   } else {
     rootFolder = dataPath("");
+    println("root folder set to: "+rootFolder);
     saveSettings();
   }
 }
