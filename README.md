@@ -75,7 +75,7 @@ Place your speaker preset in `.JSON` format inside the `data/speaker_presets` fo
 *  "lfe": Boolean - Mark true if the speaker is a subwoofer (low-frequency effects). Then it will not be used for spatial audio, but rather all other channels get a low-pass filter, which will be optionally sent to this speaker to produce bass. This is an optional parameter; if not present, the software assumes it is set to false (regular speaker).    
 
 ## OSC
-The App supports the Open Sound Control protocol. You can send positions of the virtual audio sources from other software, like so:
+The App supports the Open Sound Control protocol. You can send positions of the virtual audio sources from other software. Have a look at example [OSC template](./OSC_template). Definitions below:
 
 | OSCaddress | typetag |  Track ID | x | y | z |
 | ---------- | ------- | ---- |----- |----- |----- |
@@ -86,6 +86,14 @@ You can also directly set individual gains for each track and channel (effective
 | OSCaddress | typetag |  Track ID | 1st speaker channel | gain [0-1] | 2nd speaker channel | gain [0-1] |
 | ---------- | ------- | ---- |----- |----- |----- |----- |
 |/gains | iifififif... | 0 (1st track) | 5 | 0.368 | 1 | 0.98 |
+
+| OSCaddress | typetag | Value |
+| ---------- | ------- | ---- |
+|/play | b | True |
+|/stop | b | True |
+|/setPlaylist | s | Name of the playlist - name of the folder by default |
+|/loadPlaylist | s | Absolute Path to directory |
+|/loadPlayPlaylist | s | Absolute Path to directory |
 
 ## TUIO
 The App supports TUIO protocol (part of reacTIVision by Martin Kaltenbrunner). See below current implementation. Whenever the marker is moved its positions is assigned to Track based on marker ID (so marker ID 0 == 1st Track). You can download a [simulator](https://reactivision.sourceforge.net/#files), that lets you move the virtual markers around and see the virtual sources move in the App. 
