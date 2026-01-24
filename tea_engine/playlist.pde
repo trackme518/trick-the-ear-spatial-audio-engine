@@ -40,13 +40,13 @@ class Playlists implements Runnable {
     playlists.clear();//clear previous options, note we are not clearing the "playlist" yet
     println("rootFolder = " + rootFolder);
     File root = new File(rootFolder);
-    
-   // println("Exists: " + root.exists());
-//println("Is directory: " + root.isDirectory());
-//println("Can read: " + root.canRead());
 
-File[] files = root.listFiles();
-//println("files is null? " + (files == null));
+    // println("Exists: " + root.exists());
+    //println("Is directory: " + root.isDirectory());
+    //println("Can read: " + root.canRead());
+
+    File[] files = root.listFiles();
+    //println("files is null? " + (files == null));
 
     for (int i = 0; i < files.length; i++) {
       File f = files[i];
@@ -95,7 +95,7 @@ File[] files = root.listFiles();
   }
   //----------------
   void playNext(boolean loopPlaylists) {
-    if ( this.playlistIndex+1 > this.playlists.size()-1) {
+    if ( this.playlistIndex+1 >= this.playlists.size() ) {
       println("all presets played");
       if ( loopPlaylists ) {
         this.playlistIndex = 0;
@@ -103,13 +103,45 @@ File[] files = root.listFiles();
         return; //do nothing - stops playback
       }
     } else {
+      println( this.playlistIndex + " : " + this.playlists.get(this.playlistIndex).name );
       this.playlistIndex++;
+      println("iterate over next playlist "+this.playlistIndex);
+      println( this.playlistIndex + " : " + this.playlists.get(this.playlistIndex).name );
     }
-    this.playlist = this.playlists.get(this.playlistIndex);
-    this.playlist.play();//start playback
-    gui.radioSet("playlist", this.playlist.name);//set gui
+    this.setNewPlaylist( this.playlists.get(this.playlistIndex), true );
   }
-  //-------------------
+  //--------------------------------------
+  //this is expected to be called from GUI
+  public void setNewPlaylist(String currPlaylist) { //set new playlist by name
+    boolean playbackStarted = this.playlist.isPlaying; //remember if we are currently playing
+    Playlist newPlaylist = this.getPlaylistByName(currPlaylist);
+    if (newPlaylist!=null) { //check that such playlist exists in the avaliable options
+      this.setNewPlaylist(newPlaylist, playbackStarted) ;
+    }
+  }
+  //--------------------------------------
+  //this is expected to be called from within update() or OSC directly
+  public void setNewPlaylist(Playlist newPlaylist, boolean shouldPlay) { //set new playlist by name
+    if (newPlaylist!=null) { //check that such playlist exists in the avaliable options
+      this.playlist.stop(); //stop previous preset first
+      println("old playlist: "+this.playlist.name);
+      //hide previous GUI states
+      for (int t=0; t< this.playlist.samples.size(); t++) {
+        Track track = this.playlist.samples.get(t);
+        println(gui.getFolder());
+        gui.hide("Tracks/"+track.name); //this affects on the root level since i did not use pushFolder("x") before here
+        println("hide "+track.name);
+      }
+      this.prevPlaylistName = this.playlist.name;
+      this.playlist = newPlaylist; //assgin selected playlist
+      println("new playlist: "+this.playlist.name);
+      if (shouldPlay) { //if we were playing the previous playing. strat playing the new one instantly
+        this.playlist.play();
+      }
+      gui.radioSet("playlist", this.playlist.name);//set gui
+    }
+  }
+  //-------------------------------
 }
 
 

@@ -9,11 +9,11 @@
  Usage of the software is completely at your own risk.
  For commercial licensing, please contact us.
  */
- 
+
 /*
 TBD
-Add OSC API for playlist loading
-*/
+ Add OSC API for playlist loading
+ */
 
 String windowTitle = "Trick the Ear - Audio Engine v1.3";
 
@@ -217,29 +217,8 @@ void draw() {
   //select playlist
   //String currPlaylist = gui.radio("playlist", new String[]{"square", "circle", "triangle"}, "square");
   String currPlaylist = gui.radio("playback/playlist", playlists.playlistsNames, playlists.playlist.name);
-
   if ( !currPlaylist.equals(playlists.prevPlaylistName) ) {
-    Playlist newPlaylist = playlists.getPlaylistByName(currPlaylist);
-    if (newPlaylist!=null) { //check that such playlist exists in the avaliable options
-      boolean playbackStarted = playlists.playlist.isPlaying; //remember if we are currently playing
-      playlists.playlist.stop(); //stop previous preset first
-      println("old playlist: "+playlists.playlist.name);
-      //hide previous GUI states
-      for (int t=0; t< playlists.playlist.samples.size(); t++) {
-        Track track = playlists.playlist.samples.get(t);
-
-        println(gui.getFolder());
-        gui.hide("Tracks/"+track.name); //this affects on the root level since i did not use pushFolder("x") before here
-        println("hide "+track.name);
-      }
-
-      playlists.playlist = newPlaylist; //assgin selected playlist
-      playlists.prevPlaylistName = currPlaylist;
-      println("new playlist: "+playlists.playlist.name);
-      if (playbackStarted) { //if we were playing the previous playing. strat playing the new one instantly
-        playlists.playlist.play();
-      }
-    }
+    playlists.setNewPlaylist(currPlaylist); //see Playlist class - it hides previous Tracks in GUI as well and set other GUI options
   }
 
   gui.pushFolder("playback");
@@ -383,11 +362,11 @@ void draw() {
   } else {
     audioEngine.spatialEngine.mode = audioEngine.spatialEngine.EUCLIDIAN;
   }
-  
+
   audioEngine.binaural = gui.toggle("binaural/enable", audioEngine.binaural);
   audioEngine.binauralChannels[0] = gui.sliderInt("binaural/left channel", audioEngine.binauralChannels[0]);
   audioEngine.binauralChannels[1] = gui.sliderInt("binaural/right channel", audioEngine.binauralChannels[1]);
-  
+
   gui.popFolder();
 
   //==================RENDER DRAW LOOP ======================================
