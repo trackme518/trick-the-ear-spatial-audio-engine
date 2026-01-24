@@ -100,12 +100,16 @@ void setup() {
   
   buttons.add(new Button("Set Gains", 20, 120, 180, 30, () -> {
     //set Track at index (int) 0  gains output channels manually
-    OscP5.flush(receiver, "/gains", 0, 0.85f, 0.5f, 0.3f, 0.2f, 0.1f);
+    //where gains are defined as channel index (int) and gain / volume (float) pair
+    //you should only set the indeces that are less than number of output channels of your audio device 
+    OscP5.flush(receiver, "/gains", (int)0, (int)0, random(0,1), (int)1, random(0,1), (int)2, random(0,1), (int)3, random(0,1), (int)4, random(0,1));
   }));
   
   buttons.add(new Button("Set Position", 220, 120, 150, 30, () -> {
-    //set Track at index (int) 0  to PVector position - x,y,z (float)
-    OscP5.flush(receiver, "/position", 0, random(0,1), random(0,1), random(0,1) );
+    //set Track at index (int) 0  to PVector position - x,y,z (float), normalized [-1,+1]
+    PVector newPos = new PVector( random(-1,1), random(-1,1), random(-1,1) );
+    OscP5.flush(receiver, "/position", 0, newPos.x, newPos.y, newPos.z );
+    println("set position to "+newPos);
   }));
 }
 

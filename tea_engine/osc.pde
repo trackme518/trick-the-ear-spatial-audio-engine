@@ -90,74 +90,81 @@ void oscEvent(OscMessage m) {
 
   osc.lastRecieved = millis();
 
-  //----------------------------------------------------
-  if (m.getAddress().endsWith("position") ) {
-    int index = m.intValue(0);
-    PVector currPos = new PVector( m.floatValue(1), m.floatValue(2), m.floatValue(3) );
-    Track currTrack = playlists.playlist.getTrack(index);
-    if (currTrack==null) {
-      return;
-    }
-
-    //println(currPos);
-    currTrack.setPosition(currPos);
-    //---------------------------------------------------------
-  } else if (m.getAddress().endsWith("gains") ) {
-    //println(m);
-    String currTypetag = m.getTypetag();
-
-    int index = m.intValue(0);
-    Track currTrack = playlists.playlist.getTrack(index);
-    if (currTrack==null) {
-      return;
-    }
-
-    HashMap<Integer, Float> currGains = new HashMap<>();
-    for (int i = 1; i < currTypetag.length(); i += 2) { //ignore track index
-      int channelIndex = m.intValue(i);
-      float gain = m.floatValue(i + 1);
-      currGains.put(channelIndex, gain);
-    }
-    //println(currGains.length);
-    //println( "gains: "+Arrays.toString(currGains));
-    currTrack.setGains(currGains);
+  drawTasks.add(() -> {
     //----------------------------------------------------
-  } else if (m.getAddress().endsWith("play") ) {
-    playlists.playlist.play();
-    if (syncRecToPlay) {
-      audioEngine.startRecording();
-    }
-    //----------------------------------------------------
-  } else if (m.getAddress().endsWith("stop") ) {
-    playlists.playlist.stop();
-    if (syncRecToPlay) {
-      audioEngine.stopRecording();
-    }
-    //----------------------------------------------------
-  } else if (m.getAddress().endsWith("setPlaylist") && m.getTypetag().equals("s") ) {
-    String val = m.stringValue(0);
-    println("recieved command for changing playlist to "+val);
-    drawTasks.add(() -> {
+    if (m.getAddress().endsWith("position") ) {
+      int index = m.intValue(0);
+      PVector currPos = new PVector( m.floatValue(1), m.floatValue(2), m.floatValue(3) );
+      Track currTrack = playlists.playlist.getTrack(index);
+      if (currTrack==null) {
+        return;
+      }
+
+      //println(currPos);
+      currTrack.setPosition(currPos);
+      
+      gui.plotSet("Tracks/"+currTrack.name+"/position", currPos);
+      gui.radioSet("Tracks/"+currTrack.name+"/animate", "none");
+      gui.toggleSet("Tracks/"+currTrack.name+"/manual", false);
+      gui.toggleSet("Tracks/"+currTrack.name+"/spatial", true);
+      gui.toggleSet("Tracks/"+currTrack.name+"/static", true);
+      
+      //---------------------------------------------------------
+    } else if (m.getAddress().endsWith("gains") ) {
+      //println(m);
+      String currTypetag = m.getTypetag();
+
+      int index = m.intValue(0);
+      Track currTrack = playlists.playlist.getTrack(index);
+      if (currTrack==null) {
+        return;
+      }
+
+      HashMap<Integer, Float> currGains = new HashMap<>();
+      for (int i = 1; i < currTypetag.length(); i += 2) { //ignore track index
+        int channelIndex = m.intValue(i);
+        float gain = m.floatValue(i + 1);
+        currGains.put(channelIndex, gain);
+      }
+      //println(currGains.length);
+      //println( "gains: "+Arrays.toString(currGains));
+      currTrack.setGains(currGains);
+      
+      gui.radioSet("Tracks/"+currTrack.name+"/animate", "none");
+      gui.toggleSet("Tracks/"+currTrack.name+"/spatial", false);
+      gui.toggleSet("Tracks/"+currTrack.name+"/static", true);
+      gui.toggleSet("Tracks/"+currTrack.name+"/manual", true);
+
+      
+      //----------------------------------------------------
+    } else if (m.getAddress().endsWith("play") ) {
+      playlists.playlist.play();
+      if (syncRecToPlay) {
+        audioEngine.startRecording();
+      }
+      //----------------------------------------------------
+    } else if (m.getAddress().endsWith("stop") ) {
+      playlists.playlist.stop();
+      if (syncRecToPlay) {
+        audioEngine.stopRecording();
+      }
+      //----------------------------------------------------
+    } else if (m.getAddress().endsWith("setPlaylist") && m.getTypetag().equals("s") ) {
+      String val = m.stringValue(0);
+      println("recieved command for changing playlist to "+val);
       playlists.setNewPlaylist(  val ); //set new playlist by name
-    }
-    );
-    //----------------------------------------------------
-  } else if (m.getAddress().endsWith("loadPlaylist") && m.getTypetag().equals("s") ) {
-    String val = m.stringValue(0);
-    println("recieved command to load new playlist at dir path "+val);
-    drawTasks.add(() -> {
+      //----------------------------------------------------
+    } else if (m.getAddress().endsWith("loadPlaylist") && m.getTypetag().equals("s") ) {
+      String val = m.stringValue(0);
+      println("recieved command to load new playlist at dir path "+val);
       Playlist newPlaylist = playlists.loadPlaylist( new File(val) ); //set new playlist by name
       if (newPlaylist==null) {
         println("loading new playlist failed");
       }
-    }
-    );
-    //----------------------------------------------------
-  } else if (m.getAddress().endsWith("loadPlayPlaylist") && m.getTypetag().equals("s") ) {
-    String dir = m.stringValue(0);
-    println("recieved command to load & play new playlist at dir path "+dir);
-
-    drawTasks.add(() -> {
+      //----------------------------------------------------
+    } else if (m.getAddress().endsWith("loadPlayPlaylist") && m.getTypetag().equals("s") ) {
+      String dir = m.stringValue(0);
+      println("recieved command to load & play new playlist at dir path "+dir);
       Playlist newPlaylist = playlists.loadPlaylist(new File(dir));
       if (newPlaylist != null) {
         playlists.setNewPlaylist(newPlaylist, true);
@@ -165,6 +172,7 @@ void oscEvent(OscMessage m) {
         println("Failed to load playlist at " + dir);
       }
     }
-    );
+    //---------------------------------------------------------
   }
+  );//end add to draw tasks
 }
