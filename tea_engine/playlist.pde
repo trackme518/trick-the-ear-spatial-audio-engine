@@ -66,13 +66,25 @@ class Playlists implements Runnable {
     }
   }
 
-  void loadPlaylist(File f) {
-    ArrayList<File> files = loadFilesFromDir(f.getAbsolutePath(), this.allowedFileTypes );
-    if (files != null && files.size() > 0) { // only add if folder contains audio files
-      playlists.add(new Playlist(f, files));
+  Playlist loadPlaylist(File f) {
+    if (f!=null && f.exists() && f.isDirectory() ) {
+      ArrayList<File> files = loadFilesFromDir(f.getAbsolutePath(), this.allowedFileTypes );
+      if (files != null && files.size() > 0) { // only add if folder contains audio files
+        Playlist newPlaylist = new Playlist(f, files);
+        playlists.add(newPlaylist);
+
+        this.playlistsNames = getPlaylistsNames();
+        if (gui!=null) {
+          gui.radioSetOptions("playback/playlist", this.playlistsNames);
+        }
+        return newPlaylist;
+      } else {
+        println("Skipping empty folder: " + f.getAbsolutePath());
+      }
     } else {
-      println("Skipping empty folder: " + f.getAbsolutePath());
+      println("provided directory does not exists or is null in loadPlaylist(File f)");
     }
+    return null;
   }
 
   String[] getPlaylistsNames() {
@@ -128,9 +140,7 @@ class Playlists implements Runnable {
       //hide previous GUI states
       for (int t=0; t< this.playlist.samples.size(); t++) {
         Track track = this.playlist.samples.get(t);
-        println(gui.getFolder());
         gui.hide("Tracks/"+track.name); //this affects on the root level since i did not use pushFolder("x") before here
-        println("hide "+track.name);
       }
       this.prevPlaylistName = this.playlist.name;
       this.playlist = newPlaylist; //assgin selected playlist
@@ -138,7 +148,7 @@ class Playlists implements Runnable {
       if (shouldPlay) { //if we were playing the previous playing. strat playing the new one instantly
         this.playlist.play();
       }
-      gui.radioSet("playlist", this.playlist.name);//set gui
+      gui.radioSet("playback/playlist", this.playlist.name);//set gui
     }
   }
   //-------------------------------

@@ -6,7 +6,7 @@ class VirtualSource {
   SpatialAudio engine;      // Reference to the SpatialAudio engine for access
   // Track-specific binaural state
   BinauralAudioProcessor hrtf;
-
+  boolean isManual; //if manual, we set gains manually and NOT compute the spatial audio
   color col;
   //-----------------
 
@@ -81,8 +81,9 @@ class VirtualSource {
       this.setPosition(animator.update(position) );
       //position.set(animator.update(position));
     }
-
-    updateGains();
+    if (!this.isManual) {
+      updateGains();
+    }
   }
 
 
@@ -165,7 +166,7 @@ class CircleAnimator extends BaseAnimator implements Animator {
 
   CircleAnimator() {
     this.angle = random(0, 360); //random offset from each other
-    this.col = color( random(100,255),random(100,255),random(100,255) );
+    this.col = color( random(100, 255), random(100, 255), random(100, 255) );
   }
 
   public String[] getGuiParams() {

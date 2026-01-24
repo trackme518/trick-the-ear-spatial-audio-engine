@@ -133,6 +133,38 @@ void oscEvent(OscMessage m) {
     if (syncRecToPlay) {
       audioEngine.stopRecording();
     }
+    //----------------------------------------------------
+  } else if (m.getAddress().endsWith("setPlaylist") && m.getTypetag().equals("s") ) {
+    String val = m.stringValue(0);
+    println("recieved command for changing playlist to "+val);
+    drawTasks.add(() -> {
+      playlists.setNewPlaylist(  val ); //set new playlist by name
+    }
+    );
+    //----------------------------------------------------
+  } else if (m.getAddress().endsWith("loadPlaylist") && m.getTypetag().equals("s") ) {
+    String val = m.stringValue(0);
+    println("recieved command to load new playlist at dir path "+val);
+    drawTasks.add(() -> {
+      Playlist newPlaylist = playlists.loadPlaylist( new File(val) ); //set new playlist by name
+      if (newPlaylist==null) {
+        println("loading new playlist failed");
+      }
+    }
+    );
+    //----------------------------------------------------
+  } else if (m.getAddress().endsWith("loadPlayPlaylist") && m.getTypetag().equals("s") ) {
+    String dir = m.stringValue(0);
+    println("recieved command to load & play new playlist at dir path "+dir);
+
+    drawTasks.add(() -> {
+      Playlist newPlaylist = playlists.loadPlaylist(new File(dir));
+      if (newPlaylist != null) {
+        playlists.setNewPlaylist(newPlaylist, true);
+      } else {
+        println("Failed to load playlist at " + dir);
+      }
+    }
+    );
   }
-  //----------------------------------------------------
 }

@@ -15,12 +15,16 @@ TBD
  Add OSC API for playlist loading
  */
 
-String windowTitle = "Trick the Ear - Audio Engine v1.3";
+String windowTitle = "Trick the Ear - Audio Engine v1.4";
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+
+import java.util.concurrent.ConcurrentLinkedQueue;
+ConcurrentLinkedQueue<Runnable> drawTasks = new ConcurrentLinkedQueue<>(); //safely sync into draw with gui.fces from other events like OSC
 
 AudioEngine audioEngine;
 
@@ -98,6 +102,12 @@ void draw() {
   loadingStatus.update();
   if ( !loadingStatus.initialized) {
     return;
+  }
+
+  //safely sync into draw with gui.fces from other events like OSC
+  while (!drawTasks.isEmpty()) {
+    Runnable task = drawTasks.poll(); // removes head of queue
+    task.run();                      // runs safely on main thread
   }
 
   //using file explorer picker
@@ -281,7 +291,7 @@ void draw() {
     //if ( track.gains !=null) {
     gui.pushFolder(track.name);
 
-    boolean manualControl = gui.toggle("manual", false); //enable user to set individual gains for each channel by hand
+    track.virtualSource.isManual = gui.toggle("manual", track.virtualSource.isManual); //enable user to set individual gains for each channel by hand
     track.mute = gui.toggle( "mute", track.mute);
 
     track.isStatic = gui.toggle("static", track.isStatic);
@@ -310,7 +320,7 @@ void draw() {
       if (i<audioEngine.outputBuffers.size()) {
         //for (int i=0; i< audioEngine.activeChannels.size(); i++) {
         gui.show(guiPath);
-        if (manualControl) {
+        if (track.virtualSource.isManual) {
           float gain = gui.slider(guiPath, 0.001);
           //track.gains.put(i, gain);
           track.setGain(i, gain);
