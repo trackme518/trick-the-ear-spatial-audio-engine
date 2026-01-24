@@ -38,19 +38,24 @@ PShape createDiamondShape(int sides, float radius, float height, boolean smooth)
     // Top pyramid
     for (int i = 0; i < sides; i++) {
       int j = (i + 1) % sides;
-      sh.normal(topNormal.x, topNormal.y, topNormal.z); sh.vertex(top.x, top.y, top.z);
-      sh.normal(ringNormals[i].x, ringNormals[i].y, ringNormals[i].z); sh.vertex(ring[i].x, ring[i].y, ring[i].z);
-      sh.normal(ringNormals[j].x, ringNormals[j].y, ringNormals[j].z); sh.vertex(ring[j].x, ring[j].y, ring[j].z);
+      sh.normal(topNormal.x, topNormal.y, topNormal.z);
+      sh.vertex(top.x, top.y, top.z);
+      sh.normal(ringNormals[i].x, ringNormals[i].y, ringNormals[i].z);
+      sh.vertex(ring[i].x, ring[i].y, ring[i].z);
+      sh.normal(ringNormals[j].x, ringNormals[j].y, ringNormals[j].z);
+      sh.vertex(ring[j].x, ring[j].y, ring[j].z);
     }
 
     // Bottom pyramid
     for (int i = 0; i < sides; i++) {
       int j = (i + 1) % sides;
-      sh.normal(bottomNormal.x, bottomNormal.y, bottomNormal.z); sh.vertex(bottom.x, bottom.y, bottom.z);
-      sh.normal(ringNormals[j].x, ringNormals[j].y, ringNormals[j].z); sh.vertex(ring[j].x, ring[j].y, ring[j].z);
-      sh.normal(ringNormals[i].x, ringNormals[i].y, ringNormals[i].z); sh.vertex(ring[i].x, ring[i].y, ring[i].z);
+      sh.normal(bottomNormal.x, bottomNormal.y, bottomNormal.z);
+      sh.vertex(bottom.x, bottom.y, bottom.z);
+      sh.normal(ringNormals[j].x, ringNormals[j].y, ringNormals[j].z);
+      sh.vertex(ring[j].x, ring[j].y, ring[j].z);
+      sh.normal(ringNormals[i].x, ringNormals[i].y, ringNormals[i].z);
+      sh.vertex(ring[i].x, ring[i].y, ring[i].z);
     }
-
   } else {
     // --- Flat shading ---
     // Top pyramid
@@ -63,9 +68,12 @@ PShape createDiamondShape(int sides, float radius, float height, boolean smooth)
       // Compute face normal
       PVector normal = v2.copy().sub(v1).cross(v3.copy().sub(v1)).normalize();
 
-      sh.normal(normal.x, normal.y, normal.z); sh.vertex(v1.x, v1.y, v1.z);
-      sh.normal(normal.x, normal.y, normal.z); sh.vertex(v2.x, v2.y, v2.z);
-      sh.normal(normal.x, normal.y, normal.z); sh.vertex(v3.x, v3.y, v3.z);
+      sh.normal(normal.x, normal.y, normal.z);
+      sh.vertex(v1.x, v1.y, v1.z);
+      sh.normal(normal.x, normal.y, normal.z);
+      sh.vertex(v2.x, v2.y, v2.z);
+      sh.normal(normal.x, normal.y, normal.z);
+      sh.vertex(v3.x, v3.y, v3.z);
     }
 
     // Bottom pyramid
@@ -78,9 +86,12 @@ PShape createDiamondShape(int sides, float radius, float height, boolean smooth)
       // Compute face normal
       PVector normal = v2.copy().sub(v1).cross(v3.copy().sub(v1)).normalize();
 
-      sh.normal(normal.x, normal.y, normal.z); sh.vertex(v1.x, v1.y, v1.z);
-      sh.normal(normal.x, normal.y, normal.z); sh.vertex(v2.x, v2.y, v2.z);
-      sh.normal(normal.x, normal.y, normal.z); sh.vertex(v3.x, v3.y, v3.z);
+      sh.normal(normal.x, normal.y, normal.z);
+      sh.vertex(v1.x, v1.y, v1.z);
+      sh.normal(normal.x, normal.y, normal.z);
+      sh.vertex(v2.x, v2.y, v2.z);
+      sh.normal(normal.x, normal.y, normal.z);
+      sh.vertex(v3.x, v3.y, v3.z);
     }
   }
 
@@ -88,49 +99,6 @@ PShape createDiamondShape(int sides, float radius, float height, boolean smooth)
   return sh;
 }
 
-/*
-PShape createDiamondShape(int sides, float radius, float height) {
-  PShape sh = createShape();
-  sh.beginShape(TRIANGLES);
-  sh.noStroke();
-  sh.fill(200, 200, 0);
-
-  // Top & bottom points
-  float tx = 0, ty = -height, tz = 0;
-  float bx = 0, by =  height, bz = 0;
-
-  // Precompute ring points
-  float[] rx = new float[sides];
-  float[] rz = new float[sides];
-
-  for (int i = 0; i < sides; i++) {
-    float angle = TWO_PI * i / sides;
-    rx[i] = cos(angle) * radius;
-    rz[i] = sin(angle) * radius;
-  }
-
-  // --- Top pyramid fan ---
-  for (int i = 0; i < sides; i++) {
-    int j = (i + 1) % sides;
-
-    sh.vertex(tx, ty, tz);
-    sh.vertex(rx[i], 0, rz[i]);
-    sh.vertex(rx[j], 0, rz[j]);
-  }
-
-  // --- Bottom pyramid fan ---
-  for (int i = 0; i < sides; i++) {
-    int j = (i + 1) % sides;
-
-    sh.vertex(bx, by, bz);
-    sh.vertex(rx[j], 0, rz[j]);
-    sh.vertex(rx[i], 0, rz[i]);
-  }
-
-  sh.endShape();
-  return sh;
-}
-*/
 //----------------------------
 void setRootFolder(String pathToDir) {
   if (audioEngine==null) {
@@ -149,7 +117,15 @@ void loadSettings() {
     try {
       JSONObject globalSetting = loadJSONObject( globalConfig );
       if (globalSetting.hasKey("rootFolder")) {
-        rootFolder = globalSetting.getString("rootFolder");
+        String savedRootFolder = globalSetting.getString("rootFolder");
+        File rootFileDir = new File(savedRootFolder);
+        if ( rootFileDir.exists() && rootFileDir.isDirectory() ) {
+          rootFolder = savedRootFolder;
+        } else {
+          rootFolder = dataPath("");//set to default
+          saveSettings();
+        }
+
         println("root folder set to: "+rootFolder);
       }
     }

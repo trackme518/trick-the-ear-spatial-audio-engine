@@ -790,6 +790,51 @@
           "className": "SaveItemNode",
           "path": "saves/auto",
           "type": "TRANSIENT"
+        },
+        {
+          "className": "SaveItemNode",
+          "path": "saves/4",
+          "type": "TRANSIENT"
+        },
+        {
+          "className": "SaveItemNode",
+          "path": "saves/5",
+          "type": "TRANSIENT"
+        },
+        {
+          "className": "SaveItemNode",
+          "path": "saves/6",
+          "type": "TRANSIENT"
+        },
+        {
+          "className": "SaveItemNode",
+          "path": "saves/7",
+          "type": "TRANSIENT"
+        },
+        {
+          "className": "SaveItemNode",
+          "path": "saves/8",
+          "type": "TRANSIENT"
+        },
+        {
+          "className": "SaveItemNode",
+          "path": "saves/9",
+          "type": "TRANSIENT"
+        },
+        {
+          "className": "SaveItemNode",
+          "path": "saves/10",
+          "type": "TRANSIENT"
+        },
+        {
+          "className": "SaveItemNode",
+          "path": "saves/11",
+          "type": "TRANSIENT"
+        },
+        {
+          "className": "SaveItemNode",
+          "path": "saves/12",
+          "type": "TRANSIENT"
         }
       ],
       "className": "SaveFolderNode",
@@ -802,7 +847,7 @@
       "type": "TRANSIENT"
     },
     {
-      "stringValue": "C:\\Users\\vojo\\Documents\\GitHub\\trick-the-ear-spatial-audio-engine\\tea_engine\\data",
+      "stringValue": "C:\\Users\\vojo\\Documents\\Arduino",
       "className": "TextNode",
       "path": "root folder",
       "type": "VALUE"
@@ -891,10 +936,10 @@
     {
       "children": [
         {
-          "valueString": "Voicemeeter AUX Virtual ASIO",
+          "valueString": "Voicemeeter Virtual ASIO",
           "children": [
             {
-              "valueBoolean": true,
+              "valueBoolean": false,
               "className": "RadioItemNode",
               "path": "output/device/Voicemeeter AUX Virtual ASIO",
               "type": "TRANSIENT"
@@ -906,12 +951,18 @@
               "type": "TRANSIENT"
             },
             {
-              "valueBoolean": false,
+              "valueBoolean": true,
               "className": "RadioItemNode",
               "path": "output/device/Voicemeeter Virtual ASIO",
               "type": "TRANSIENT"
             }
           ],
+          "window": {
+            "posX": 748.0,
+            "posY": 88.0,
+            "closed": false,
+            "windowSizeX": 374.0
+          },
           "className": "RadioFolderNode",
           "path": "output/device",
           "type": "FOLDER"
@@ -983,20 +1034,6 @@
               "className": "SliderNode",
               "path": "output/subwoofers/bass volume",
               "type": "VALUE"
-            },
-            {
-              "children": [
-                {
-                  "valueFloat": 8.0,
-                  "valueFloatPrecision": 1.0,
-                  "className": "SliderIntNode",
-                  "path": "output/subwoofers/sub_0/channel",
-                  "type": "VALUE"
-                }
-              ],
-              "className": "FolderNode",
-              "path": "output/subwoofers/sub_0",
-              "type": "FOLDER"
             }
           ],
           "className": "FolderNode",
@@ -1004,6 +1041,12 @@
           "type": "FOLDER"
         }
       ],
+      "window": {
+        "posX": 264.0,
+        "posY": 22.0,
+        "closed": false,
+        "windowSizeX": 220.0
+      },
       "className": "FolderNode",
       "path": "output",
       "type": "FOLDER"
@@ -1028,8 +1071,8 @@
           ],
           "window": {
             "posX": 440.0,
-            "posY": 22.0,
-            "closed": true,
+            "posY": 374.0,
+            "closed": false,
             "windowSizeX": 220.0
           },
           "className": "RadioFolderNode",
@@ -1059,7 +1102,7 @@
           "type": "VALUE"
         },
         {
-          "valueString": "play all",
+          "valueString": "loop all",
           "children": [
             {
               "valueBoolean": false,
@@ -1068,7 +1111,7 @@
               "type": "TRANSIENT"
             },
             {
-              "valueBoolean": true,
+              "valueBoolean": false,
               "className": "RadioItemNode",
               "path": "playback/loop/play all",
               "type": "TRANSIENT"
@@ -1080,12 +1123,18 @@
               "type": "TRANSIENT"
             },
             {
-              "valueBoolean": false,
+              "valueBoolean": true,
               "className": "RadioItemNode",
               "path": "playback/loop/loop all",
               "type": "TRANSIENT"
             }
           ],
+          "window": {
+            "posX": 594.0,
+            "posY": 440.0,
+            "closed": true,
+            "windowSizeX": 154.0
+          },
           "className": "RadioFolderNode",
           "path": "playback/loop",
           "type": "FOLDER"
@@ -1103,10 +1152,10 @@
         }
       ],
       "window": {
-        "posX": 198.0,
-        "posY": 22.0,
+        "posX": 88.0,
+        "posY": 616.0,
         "closed": false,
-        "windowSizeX": 220.0
+        "windowSizeX": 330.0
       },
       "className": "FolderNode",
       "path": "playback",
@@ -1177,9 +1226,9 @@
                 }
               ],
               "window": {
-                "posX": 550.0,
-                "posY": 22.0,
-                "closed": false,
+                "posX": 1540.0,
+                "posY": 242.0,
+                "closed": true,
                 "windowSizeX": 154.0
               },
               "className": "RadioFolderNode",
@@ -1194,21 +1243,21 @@
               "type": "VALUE"
             },
             {
-              "valueFloat": 86.59998321533203,
+              "valueFloat": 0.0,
               "valueFloatPrecision": 0.1,
               "className": "SliderNode",
               "path": "Tracks/bass/axis X",
               "type": "VALUE"
             },
             {
-              "valueFloat": 34.799991607666016,
+              "valueFloat": 0.0,
               "valueFloatPrecision": 0.1,
               "className": "SliderNode",
               "path": "Tracks/bass/axis Y",
               "type": "VALUE"
             },
             {
-              "valueFloat": 95.20030212402344,
+              "valueFloat": 42.0,
               "valueFloatPrecision": 1.0,
               "className": "SliderIntNode",
               "path": "Tracks/bass/speed",
@@ -1222,34 +1271,40 @@
                   "type": "TRANSIENT"
                 },
                 {
-                  "valueFloat": 0.30240970849990845,
-                  "valueFloatPrecision": 0.1,
+                  "valueFloat": -0.14339415729045868,
+                  "valueFloatPrecision": 0.01,
                   "className": "SliderNode",
                   "path": "Tracks/bass/position/x",
                   "type": "VALUE"
                 },
                 {
-                  "valueFloat": -0.025856757536530495,
-                  "valueFloatPrecision": 0.1,
+                  "valueFloat": 0.7870439291000366,
+                  "valueFloatPrecision": 0.01,
                   "className": "SliderNode",
                   "path": "Tracks/bass/position/y",
                   "type": "VALUE"
                 },
                 {
-                  "valueFloat": -0.7401890754699707,
-                  "valueFloatPrecision": 0.1,
+                  "valueFloat": 0.0,
+                  "valueFloatPrecision": 0.01,
                   "className": "SliderNode",
                   "path": "Tracks/bass/position/z",
                   "type": "VALUE"
                 }
               ],
+              "window": {
+                "posX": 1540.0,
+                "posY": 242.0,
+                "closed": false,
+                "windowSizeX": 154.0
+              },
               "className": "PlotFolderNode",
               "path": "Tracks/bass/position",
               "type": "FOLDER"
             }
           ],
           "window": {
-            "posX": 726.0,
+            "posX": 1298.0,
             "posY": 176.0,
             "closed": false,
             "windowSizeX": 198.0
@@ -1261,7 +1316,7 @@
         {
           "children": [
             {
-              "valueBoolean": false,
+              "valueBoolean": true,
               "className": "ToggleNode",
               "path": "Tracks/chords/manual",
               "type": "VALUE"
@@ -1273,13 +1328,13 @@
               "type": "VALUE"
             },
             {
-              "valueBoolean": true,
+              "valueBoolean": false,
               "className": "ToggleNode",
               "path": "Tracks/chords/static",
               "type": "VALUE"
             },
             {
-              "valueBoolean": true,
+              "valueBoolean": false,
               "className": "ToggleNode",
               "path": "Tracks/chords/spatial",
               "type": "VALUE"
@@ -1339,11 +1394,23 @@
                   "type": "VALUE"
                 }
               ],
+              "window": {
+                "posX": 1562.0,
+                "posY": 440.0,
+                "closed": false,
+                "windowSizeX": 154.0
+              },
               "className": "PlotFolderNode",
               "path": "Tracks/chords/position",
               "type": "FOLDER"
             }
           ],
+          "window": {
+            "posX": 1320.0,
+            "posY": 660.0,
+            "closed": false,
+            "windowSizeX": 198.0
+          },
           "className": "FolderNode",
           "path": "Tracks/chords",
           "type": "FOLDER"
@@ -1396,6 +1463,12 @@
                   "type": "TRANSIENT"
                 }
               ],
+              "window": {
+                "posX": 1518.0,
+                "posY": 176.0,
+                "closed": false,
+                "windowSizeX": 154.0
+              },
               "className": "RadioFolderNode",
               "path": "Tracks/drums/animate",
               "type": "FOLDER"
@@ -1408,14 +1481,14 @@
                   "type": "TRANSIENT"
                 },
                 {
-                  "valueFloat": 0.0,
+                  "valueFloat": 0.800000011920929,
                   "valueFloatPrecision": 0.1,
                   "className": "SliderNode",
                   "path": "Tracks/drums/position/x",
                   "type": "VALUE"
                 },
                 {
-                  "valueFloat": 0.0,
+                  "valueFloat": 1.4901161193847656E-8,
                   "valueFloatPrecision": 0.1,
                   "className": "SliderNode",
                   "path": "Tracks/drums/position/y",
@@ -1429,11 +1502,23 @@
                   "type": "VALUE"
                 }
               ],
+              "window": {
+                "posX": 1166.0,
+                "posY": 660.0,
+                "closed": false,
+                "windowSizeX": 154.0
+              },
               "className": "PlotFolderNode",
               "path": "Tracks/drums/position",
               "type": "FOLDER"
             }
           ],
+          "window": {
+            "posX": 880.0,
+            "posY": 660.0,
+            "closed": false,
+            "windowSizeX": 198.0
+          },
           "className": "FolderNode",
           "path": "Tracks/drums",
           "type": "FOLDER"
@@ -1498,14 +1583,14 @@
                   "type": "TRANSIENT"
                 },
                 {
-                  "valueFloat": 0.0,
+                  "valueFloat": -0.30000001192092896,
                   "valueFloatPrecision": 0.1,
                   "className": "SliderNode",
                   "path": "Tracks/melody/position/x",
                   "type": "VALUE"
                 },
                 {
-                  "valueFloat": 0.0,
+                  "valueFloat": -0.10000000149011612,
                   "valueFloatPrecision": 0.1,
                   "className": "SliderNode",
                   "path": "Tracks/melody/position/y",
@@ -1519,21 +1604,33 @@
                   "type": "VALUE"
                 }
               ],
+              "window": {
+                "posX": 1518.0,
+                "posY": 176.0,
+                "closed": false,
+                "windowSizeX": 154.0
+              },
               "className": "PlotFolderNode",
               "path": "Tracks/melody/position",
               "type": "FOLDER"
             }
           ],
+          "window": {
+            "posX": 1100.0,
+            "posY": 44.0,
+            "closed": false,
+            "windowSizeX": 198.0
+          },
           "className": "FolderNode",
           "path": "Tracks/melody",
           "type": "FOLDER"
         }
       ],
       "window": {
-        "posX": 396.0,
-        "posY": 198.0,
+        "posX": 572.0,
+        "posY": 462.0,
         "closed": false,
-        "windowSizeX": 110.0
+        "windowSizeX": 154.0
       },
       "className": "FolderNode",
       "path": "Tracks",
@@ -1542,24 +1639,12 @@
     {
       "children": [
         {
-          "valueString": "Circular 8.1",
+          "valueString": "default",
           "children": [
             {
               "valueBoolean": true,
               "className": "RadioItemNode",
-              "path": "Spatial Engine/preset/Circular 8.1",
-              "type": "TRANSIENT"
-            },
-            {
-              "valueBoolean": false,
-              "className": "RadioItemNode",
-              "path": "Spatial Engine/preset/dresden 16 cube",
-              "type": "TRANSIENT"
-            },
-            {
-              "valueBoolean": false,
-              "className": "RadioItemNode",
-              "path": "Spatial Engine/preset/Quad 4.1",
+              "path": "Spatial Engine/preset/default",
               "type": "TRANSIENT"
             }
           ],
@@ -1689,7 +1774,7 @@
     "posX": 22.0,
     "posY": 22.0,
     "closed": false,
-    "windowSizeX": 154.0
+    "windowSizeX": 220.0
   },
   "className": "FolderNode",
   "path": "",
