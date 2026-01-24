@@ -10,12 +10,6 @@
  For commercial licensing, please contact us.
  */
 
-/*
-TBD
- * add GUI for assigning binaural channels (currently always first two channels) + adjust audioEngine algo for that
- */
-
-
 String windowTitle = "Trick the Ear - Audio Engine v1.3";
 
 import java.util.ArrayList;
@@ -24,7 +18,7 @@ import java.util.List;
 import java.util.Set;
 
 AudioEngine audioEngine;
-//AsioaudioEngine audioEngine;
+
 PApplet context;
 
 import peasy.PeasyCam;
@@ -44,7 +38,7 @@ boolean syncRecToPlay = false;
 //---------------------
 
 PGraphics canvas; //offscreen render texture for 3D speakers visualization
-//SpatialAudio spatialEngine;
+
 PresetGenerator presetGenerator;
 
 int _width, _height; //keep track of sketch dimensions in case of resize event

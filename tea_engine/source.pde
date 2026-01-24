@@ -113,6 +113,10 @@ class VirtualSource {
       draw3DLabel(nf(gain, 1, 2), sp, 1.0, 24, 0, -30, pg);
     }
     pg.popStyle();
+
+    if (animator != null) {
+      animator.render(pg);
+    }
   }
 }
 
@@ -121,6 +125,7 @@ class VirtualSource {
 interface Animator {
   PVector update(PVector position);
   void drawGui();
+  void render(PGraphics pg);
   void toggleGui(boolean show);
   String[] getGuiParams();
 }
@@ -138,6 +143,10 @@ abstract class BaseAnimator implements Animator {
     }
   }
 
+  void render(PGraphics pg) {
+    //does nothing by default
+  }
+
   // abstract methods required by all Animators
   abstract public PVector update(PVector position);
   abstract public void drawGui();
@@ -147,25 +156,32 @@ class CircleAnimator extends BaseAnimator implements Animator {
 
   float angle = 0;          // Angle for circular motion
   float radius = 0.8;       // Radius in normalized space (1 = unit circle)
-  float speed = 0.01;       // Angular speed (radians per frame)
+  float speed = 35;       // Angular speed (degrees per second)
   // circle plane rotation (radians)
   float alpha = 0.0; // rotation around X axis
   float beta  = 0.0; // rotation around Y axis
+  long lastMillis = millis();
+  color col;
 
   CircleAnimator() {
     this.angle = random(0, 360); //random offset from each other
+    this.col = color( random(100,255),random(100,255),random(100,255) );
   }
 
   public String[] getGuiParams() {
     return new String[] {"radius", "axis X", "axis Y", "speed"};
   }
 
+
   PVector update(PVector position) {
-    angle += speed;
+    float dt = (millis() - lastMillis) * 0.001f;
+    lastMillis = millis();
+    angle += speed * dt;
+
+    //angle += speed;
     position.x = cos(angle) * radius;
     position.y = sin(angle) * radius;
     position.z = height;
-    angle += speed;
     // Base circle in XY plane
     float x = cos(angle) * radius;
     float y = sin(angle) * radius;
@@ -182,11 +198,41 @@ class CircleAnimator extends BaseAnimator implements Animator {
     return position;
   }
 
+  @Override
+    void render(PGraphics pg) {
+    if (audioEngine==null || audioEngine.spatialEngine ==null) {
+      return;
+    }
+    pg.pushStyle();
+    pg.pushMatrix();
+    // Apply plane rotations
+    pg.rotateY(beta);
+    pg.rotateX(alpha);
+    // Scale to radius in render space
+    float r = radius * audioEngine.spatialEngine.renderScale;
+    pg.noFill();
+    pg.stroke(this.col);
+    pg.strokeWeight(2);
+    // Draw circle in local XY plane
+    pg.beginShape();
+    for (int i = 0; i <= 64; i++) {
+      float a = TWO_PI * i / (float)64;
+      float x = cos(a) * r;
+      float y = sin(a) * r;
+      pg.vertex(x, y, 0);
+    }
+    pg.endShape();
+    //----------------
+    pg.popMatrix();
+    pg.popStyle();
+  }
+
+
   void drawGui() {
     this.radius = gui.slider("radius", this.radius, 0.0001, 2.0);
     this.alpha = radians( gui.slider("axis X", degrees(this.alpha), 0.0, 360 ) ) ;
     this.beta = radians(  gui.slider("axis Y", degrees(this.beta), 0.0, 360) );
-    this.speed = radians( gui.slider("speed", degrees(this.speed), 0.0001, 90) );
+    this.speed = radians( gui.sliderInt("speed", round( degrees(this.speed) ), 1, 360) ); //degrees per second
   }
 }
 //--------------------------------------------------------------------------------------
