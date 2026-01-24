@@ -38,7 +38,8 @@ class Playlists implements Runnable {
   //run callback when finished
   void loadPlaylists() {
     playlists.clear();//clear previous options, note we are not clearing the "playlist" yet
-    File[] files = listFiles( rootFolder );
+    File root = new File(rootFolder);
+    File[] files = root.listFiles();
     for (int i = 0; i < files.length; i++) {
       File f = files[i];
       if ( f.isDirectory() ) {
