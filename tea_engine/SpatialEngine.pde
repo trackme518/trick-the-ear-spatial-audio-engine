@@ -39,9 +39,12 @@ public class SpatialAudio {//implements Runnable
   int mode = EUCLIDIAN;
 
   float powerSharpness = 2; //tuning parameter for sharpness, only applied to 3D layouts using triplets
+  PShape diamondShape;
 
   SpatialAudio() {
     loadPresets();
+    this.diamondShape = createDiamondShape(8,1.0,1.0, true);//number of sides, radius, height, smooth shading / flat shading false
+    this.diamondShape.setFill(color(120, 226, 108));
   }
 
   boolean loadPreset(Preset preset) {
@@ -322,11 +325,16 @@ public class SpatialAudio {//implements Runnable
       centroidPos.mult(this.renderScale);
 
       screen.translate( centroidPos.x, centroidPos.y, centroidPos.z );
-      screen.fill(200, 200, 0);
-      screen.noStroke();
+      //screen.fill(200, 200, 0);
+      //this.diamondShape.fill(120, 226, 108);
+      //this.diamondShape.setFill(color(120, 226, 108));
+      //screen.noStroke();
 
       //screen.sphereDetail(6);
-      screen.sphere(15);
+      screen.rotateX(-HALF_PI);// Rotate diamond so tip points up
+      screen.scale(15);
+      screen.shape(this.diamondShape);
+      //screen.sphere(15);
       screen.popMatrix();
     }
 

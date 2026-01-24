@@ -75,9 +75,9 @@ class Track {
   //--------------------
 
   void update() {
-    if (!isStatic) {
-      virtualSource.update();
-    }
+    //if (!isStatic) {
+    virtualSource.update();
+    //}
     virtualSource.render(canvas);
   }
 

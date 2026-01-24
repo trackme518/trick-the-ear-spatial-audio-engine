@@ -6,7 +6,132 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.awt.Desktop;
 //--------------------------------
+//N-sided diamond (generalized octahedron)
+PShape createDiamondShape(int sides, float radius, float height, boolean smooth) {
+  PShape sh = createShape();
+  sh.beginShape(TRIANGLES);
+  sh.noStroke();
+  //sh.fill(200, 200, 0);
 
+  // Top & bottom points
+  PVector top = new PVector(0, -height, 0);
+  PVector bottom = new PVector(0, height, 0);
+
+  // Ring points around equator
+  PVector[] ring = new PVector[sides];
+  for (int i = 0; i < sides; i++) {
+    float angle = TWO_PI * i / sides;
+    float x = cos(angle) * radius;
+    float z = sin(angle) * radius;
+    ring[i] = new PVector(x, 0, z);
+  }
+
+  if (smooth) {
+    // --- Smooth shading ---
+    PVector[] ringNormals = new PVector[sides];
+    for (int i = 0; i < sides; i++) {
+      ringNormals[i] = ring[i].copy().normalize(); // outward normals
+    }
+    PVector topNormal = new PVector(0, -1, 0);
+    PVector bottomNormal = new PVector(0, 1, 0);
+
+    // Top pyramid
+    for (int i = 0; i < sides; i++) {
+      int j = (i + 1) % sides;
+      sh.normal(topNormal.x, topNormal.y, topNormal.z); sh.vertex(top.x, top.y, top.z);
+      sh.normal(ringNormals[i].x, ringNormals[i].y, ringNormals[i].z); sh.vertex(ring[i].x, ring[i].y, ring[i].z);
+      sh.normal(ringNormals[j].x, ringNormals[j].y, ringNormals[j].z); sh.vertex(ring[j].x, ring[j].y, ring[j].z);
+    }
+
+    // Bottom pyramid
+    for (int i = 0; i < sides; i++) {
+      int j = (i + 1) % sides;
+      sh.normal(bottomNormal.x, bottomNormal.y, bottomNormal.z); sh.vertex(bottom.x, bottom.y, bottom.z);
+      sh.normal(ringNormals[j].x, ringNormals[j].y, ringNormals[j].z); sh.vertex(ring[j].x, ring[j].y, ring[j].z);
+      sh.normal(ringNormals[i].x, ringNormals[i].y, ringNormals[i].z); sh.vertex(ring[i].x, ring[i].y, ring[i].z);
+    }
+
+  } else {
+    // --- Flat shading ---
+    // Top pyramid
+    for (int i = 0; i < sides; i++) {
+      int j = (i + 1) % sides;
+      PVector v1 = top;
+      PVector v2 = ring[i];
+      PVector v3 = ring[j];
+
+      // Compute face normal
+      PVector normal = v2.copy().sub(v1).cross(v3.copy().sub(v1)).normalize();
+
+      sh.normal(normal.x, normal.y, normal.z); sh.vertex(v1.x, v1.y, v1.z);
+      sh.normal(normal.x, normal.y, normal.z); sh.vertex(v2.x, v2.y, v2.z);
+      sh.normal(normal.x, normal.y, normal.z); sh.vertex(v3.x, v3.y, v3.z);
+    }
+
+    // Bottom pyramid
+    for (int i = 0; i < sides; i++) {
+      int j = (i + 1) % sides;
+      PVector v1 = bottom;
+      PVector v2 = ring[j];
+      PVector v3 = ring[i];
+
+      // Compute face normal
+      PVector normal = v2.copy().sub(v1).cross(v3.copy().sub(v1)).normalize();
+
+      sh.normal(normal.x, normal.y, normal.z); sh.vertex(v1.x, v1.y, v1.z);
+      sh.normal(normal.x, normal.y, normal.z); sh.vertex(v2.x, v2.y, v2.z);
+      sh.normal(normal.x, normal.y, normal.z); sh.vertex(v3.x, v3.y, v3.z);
+    }
+  }
+
+  sh.endShape();
+  return sh;
+}
+
+/*
+PShape createDiamondShape(int sides, float radius, float height) {
+  PShape sh = createShape();
+  sh.beginShape(TRIANGLES);
+  sh.noStroke();
+  sh.fill(200, 200, 0);
+
+  // Top & bottom points
+  float tx = 0, ty = -height, tz = 0;
+  float bx = 0, by =  height, bz = 0;
+
+  // Precompute ring points
+  float[] rx = new float[sides];
+  float[] rz = new float[sides];
+
+  for (int i = 0; i < sides; i++) {
+    float angle = TWO_PI * i / sides;
+    rx[i] = cos(angle) * radius;
+    rz[i] = sin(angle) * radius;
+  }
+
+  // --- Top pyramid fan ---
+  for (int i = 0; i < sides; i++) {
+    int j = (i + 1) % sides;
+
+    sh.vertex(tx, ty, tz);
+    sh.vertex(rx[i], 0, rz[i]);
+    sh.vertex(rx[j], 0, rz[j]);
+  }
+
+  // --- Bottom pyramid fan ---
+  for (int i = 0; i < sides; i++) {
+    int j = (i + 1) % sides;
+
+    sh.vertex(bx, by, bz);
+    sh.vertex(rx[j], 0, rz[j]);
+    sh.vertex(rx[i], 0, rz[i]);
+  }
+
+  sh.endShape();
+  return sh;
+}
+*/
+//----------------------------
 void setRootFolder(String pathToDir) {
   if (audioEngine==null) {
     println("audioEngine null");
