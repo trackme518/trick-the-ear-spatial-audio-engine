@@ -1,0 +1,13 @@
+{
+  "name": "cube 8 VRlab",
+  "speakers":[
+  {"index":6, "position_normalized":[1, 0.5, 1]},
+  {"index":7, "position_normalized":[1, 0.5, -1]},
+  {"index":1, "position_normalized":[-1, -0.5, 1]},
+  {"index":2, "position_normalized":[1, -0.5, 1]},
+  {"index":0, "position_normalized":[-1, -0.5, -1]},
+  {"index":5, "position_normalized":[-1, 0.5, 1]},
+  {"index":3, "position_normalized":[1, -0.5, -1]},
+  {"index":4, "position_normalized":[-1, 0.5, -1]}
+  ]
+}

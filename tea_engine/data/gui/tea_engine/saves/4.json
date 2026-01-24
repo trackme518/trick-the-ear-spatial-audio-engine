@@ -792,6 +792,12 @@
           "type": "TRANSIENT"
         }
       ],
+      "window": {
+        "posX": 264.0,
+        "posY": 22.0,
+        "closed": false,
+        "windowSizeX": 198.0
+      },
       "className": "SaveFolderNode",
       "path": "saves",
       "type": "FOLDER"
@@ -1105,7 +1111,7 @@
       "window": {
         "posX": 198.0,
         "posY": 22.0,
-        "closed": false,
+        "closed": true,
         "windowSizeX": 220.0
       },
       "className": "FolderNode",
@@ -1179,7 +1185,7 @@
               "window": {
                 "posX": 550.0,
                 "posY": 22.0,
-                "closed": false,
+                "closed": true,
                 "windowSizeX": 154.0
               },
               "className": "RadioFolderNode",
@@ -1222,21 +1228,21 @@
                   "type": "TRANSIENT"
                 },
                 {
-                  "valueFloat": 0.30240970849990845,
+                  "valueFloat": -0.7946584224700928,
                   "valueFloatPrecision": 0.1,
                   "className": "SliderNode",
                   "path": "Tracks/bass/position/x",
                   "type": "VALUE"
                 },
                 {
-                  "valueFloat": -0.025856757536530495,
+                  "valueFloat": -0.022578557953238487,
                   "valueFloatPrecision": 0.1,
                   "className": "SliderNode",
                   "path": "Tracks/bass/position/y",
                   "type": "VALUE"
                 },
                 {
-                  "valueFloat": -0.7401890754699707,
+                  "valueFloat": 0.08948904275894165,
                   "valueFloatPrecision": 0.1,
                   "className": "SliderNode",
                   "path": "Tracks/bass/position/z",
@@ -1251,7 +1257,7 @@
           "window": {
             "posX": 726.0,
             "posY": 176.0,
-            "closed": false,
+            "closed": true,
             "windowSizeX": 198.0
           },
           "className": "FolderNode",
@@ -1532,7 +1538,7 @@
       "window": {
         "posX": 396.0,
         "posY": 198.0,
-        "closed": false,
+        "closed": true,
         "windowSizeX": 110.0
       },
       "className": "FolderNode",
@@ -1548,6 +1554,18 @@
               "valueBoolean": true,
               "className": "RadioItemNode",
               "path": "Spatial Engine/preset/Circular 8.1",
+              "type": "TRANSIENT"
+            },
+            {
+              "valueBoolean": false,
+              "className": "RadioItemNode",
+              "path": "Spatial Engine/preset/cube 8 VRlab",
+              "type": "TRANSIENT"
+            },
+            {
+              "valueBoolean": false,
+              "className": "RadioItemNode",
+              "path": "Spatial Engine/preset/dome_13_6-4_half",
               "type": "TRANSIENT"
             },
             {
@@ -1689,7 +1707,7 @@
     "posX": 22.0,
     "posY": 22.0,
     "closed": false,
-    "windowSizeX": 154.0
+    "windowSizeX": 220.0
   },
   "className": "FolderNode",
   "path": "",

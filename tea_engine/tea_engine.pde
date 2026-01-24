@@ -49,8 +49,9 @@ PresetGenerator presetGenerator;
 int _width, _height; //keep track of sketch dimensions in case of resize event
 
 void setup() {
-  size(1280, 1024, P2D);
+  size(1920, 1080, P2D);
   pixelDensity(displayDensity());
+  surface.setResizable(true);
   context = this;
 
   loadSettings(); //load supeglobal settings that are independant from GUI saves from data folder. see util fce
