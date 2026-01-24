@@ -13,7 +13,7 @@ The App is a spatial audio engine and audio mixer all in one. You have multiple 
  * On Windows the App scans ASIO devices (if you don't have ASIO capable device, you can use [ASIO4ALL](https://asio4all.org/about/download-asio4all/)), on MacOS it uses CoreAudio.    
 * In the GUI, click `Tracks`, `Name of your track`, and you will see a bunch of options. Make sure that `spatial` & `static` are set to true. Adjust the `position` of each audio File in space - you can increase or decrease the precision of the slider by using the mouse scroll wheel. 
 
-[![Video demo showing various speaker topologies](./assets/screenshot1.png)](https://www.youtube.com/watch?v=s-aY4L8xGKc)
+[![Video tutorial](./assets/video_thumbnail.jpg)](https://youtu.be/2C00l815yFw)
 
 ## Download
 * Choose the right release for your OS, see [Latest release](https://github.com/trackme518/trick-the-ear-spatial-audio-engine/releases)
