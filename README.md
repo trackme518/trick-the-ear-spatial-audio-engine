@@ -4,6 +4,7 @@
 The App is a spatial audio engine and audio mixer all in one. You have multiple speakers, and you want to create an illusion that the sound is moving between them. It can also render spatial audio into binaural stereo for headphones monitoring. Furthermore, it also serves as an audio recorder. You can set virtual audio sources' position manually, select from premade animations, or use OSC or TUIO API to animate their positions from other software of your choosing. 
 
 ## How to use it?
+* Check out the [video tutorial](https://youtu.be/2C00l815yFw)
 * Place your .wav mono audio files in `data/samples/your-playlist-name` folder (it can be a single track or multiple, they will all be played in sync).
 * Create a speaker preset in `JSON` format (see examples in `data/speaker_presets`), specify a name for the preset, where your speakers are, the channel number, and whether it is a subwoofer or a regular speaker.
   * Optionally you can also directly generate new 2D preset boiler plate from GUI using cirular or rectangular template (you still need to modify the channel order etc to suit your needs).
@@ -43,7 +44,7 @@ Other alternative is to:
 * Donate money to support the development.
 
 ## To be done - Features wanted
-* Video tutorial + templates how to connect via OSC (coming soon)
+* Templates how to connect via OSC (coming soon)
 * Minor bug fixes
 * Test on MacOS with audio card
 * Add Linux audio interface and test it (JACK?)
