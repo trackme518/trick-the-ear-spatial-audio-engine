@@ -9,6 +9,11 @@
  Usage of the software is completely at your own risk.
  For commercial licensing, please contact us.
  */
+ 
+/*
+TBD
+Add OSC API for playlist loading
+*/
 
 String windowTitle = "Trick the Ear - Audio Engine v1.3";
 
