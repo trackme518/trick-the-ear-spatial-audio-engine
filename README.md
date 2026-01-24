@@ -48,9 +48,6 @@ Other alternative is to:
 * Test on MacOS with audio card
 * Add Linux audio interface and test it (JACK?)
 * Add more animation types
-* Optimize performance (aka make it faster)
-* Let user set binaural output channels manually
-* Add visualization for circular animation trajectories
 * Add OSC API for loading new playlist
 
 ## Speakers preset
