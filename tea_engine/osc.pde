@@ -125,13 +125,13 @@ void oscEvent(OscMessage m) {
   } else if (m.getAddress().endsWith("play") ) {
     playlists.playlist.play();
     if (syncRecToPlay) {
-      host.startRecording();
+      audioEngine.startRecording();
     }
     //----------------------------------------------------
   } else if (m.getAddress().endsWith("stop") ) {
     playlists.playlist.stop();
     if (syncRecToPlay) {
-      host.stopRecording();
+      audioEngine.stopRecording();
     }
   }
   //----------------------------------------------------

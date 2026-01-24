@@ -9,7 +9,7 @@ class Preset {
   String name;
   int hash;
   ArrayList<Speaker> speakers = new ArrayList<Speaker>();
-  //subset of speakers - just a helper reference with channel indeces for subwoofers, help inside AudioEngine host instance
+  //subset of speakers - just a helper reference with channel indeces for subwoofers, help inside AudioEngine audioEngine instance
   ArrayList<Integer> subChannels = new ArrayList<>();
 
   PShape convexHull; //I am constructing the PSahpe as if it was an .obj => each face is a child of parent object and it consists of three points ie triangle
@@ -238,7 +238,7 @@ class PresetGenerator {
 
     if (gui.button("generate")) {
       Preset currPreset = this.generatePreset(currName);
-      this.addToEngine( host.spatialEngine, currPreset );
+      this.addToEngine( audioEngine.spatialEngine, currPreset );
     }
   }
 

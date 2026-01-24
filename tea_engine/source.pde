@@ -66,7 +66,7 @@ class VirtualSource {
     //println("set position: "+vec);
     this.position.set(vec);
 
-    if (this.hrtf!=null && host.binaural) {
+    if (this.hrtf!=null && audioEngine.binaural) {
       this.hrtf.setPosition( new PVector(position.x, position.z, -position.y) );//reverse PeasyCam axis order ;-)
       //this.hrtf.setPosition(vec);
     }

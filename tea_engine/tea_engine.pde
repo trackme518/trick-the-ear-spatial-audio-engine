@@ -12,7 +12,7 @@
 
 /*
 TBD
- * add GUI for assigning binaural channels (currently always first two channels) + adjust host algo for that
+ * add GUI for assigning binaural channels (currently always first two channels) + adjust audioEngine algo for that
  */
 
 
@@ -23,8 +23,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-AudioEngine host;
-//AsioHost host;
+AudioEngine audioEngine;
+//AsioaudioEngine audioEngine;
 PApplet context;
 
 import peasy.PeasyCam;
@@ -64,8 +64,8 @@ void setup() {
   presetGenerator = new PresetGenerator();
   //spatialEngine = new SpatialAudio();
 
-  host = new AudioEngine();
-  //host = new AsioHost();
+  audioEngine = new AudioEngine();
+  //audioEngine = new AsioaudioEngine();
 
   gui = new LazyGui(this);
   gui.hide("options");
@@ -112,8 +112,8 @@ void draw() {
         gui.radioSetOptions("playback/playlist", playlists.playlistsNames);
         gui.radioSet("playback/playlist", playlists.playlist.name);
 
-        gui.radioSetOptions("Spatial Engine/preset", host.spatialEngine.presetNames);
-        gui.radioSet("Spatial Engine/preset", host.spatialEngine.preset.name);
+        gui.radioSetOptions("Spatial Engine/preset", audioEngine.spatialEngine.presetNames);
+        gui.radioSet("Spatial Engine/preset", audioEngine.spatialEngine.preset.name);
 
 
         println("Default playlist folder set to " + rootFolder);
@@ -129,7 +129,7 @@ void draw() {
 
   //==================Record GUI======================================
   gui.pushFolder("recorder");
-  if (host.recordingEnabled) {
+  if (audioEngine.recordingEnabled) {
     gui.colorPickerSet("recording", color(255, 0, 0));
   } else {
     gui.colorPickerSet("recording", color(127));
@@ -142,73 +142,72 @@ void draw() {
     if (syncRecToPlay) {
       playlists.playlist.play();
     }
-    host.startRecording();
+    audioEngine.startRecording();
   }
   if (gui.button("stop")) {
     if (syncRecToPlay) {
       playlists.playlist.stop();
     }
-    host.stopRecording();
+    audioEngine.stopRecording();
   }
   if (gui.button("open folder")) {
-    openFolder(host.lastRecordingPath );
+    openFolder(audioEngine.lastRecordingPath );
   }
 
-  host.recordingChannels = gui.sliderInt("channels:", host.recordingChannels, 1, 128);
+  audioEngine.recordingChannels = gui.sliderInt("channels:", audioEngine.recordingChannels, 1, 128);
   gui.popFolder();
 
   //==================Output GUI======================================
   gui.pushFolder("output");
-  String currDeviceName = gui.radio("device", host.deviceNames );
-  host.binaural = gui.toggle("binaural", host.binaural);
+  String currDeviceName = gui.radio("device", audioEngine.deviceNames );
 
   if (gui.button("open")) {
-    host.open(currDeviceName); //will call backend
+    audioEngine.open(currDeviceName); //will call backend
   }
-  gui.sliderSet("outputs:", host.backend.getOutputChannelCount());
-  gui.toggleSet("active", host.backend.isActive() );
+  gui.sliderSet("outputs:", audioEngine.backend.getOutputChannelCount());
+  gui.toggleSet("active", audioEngine.backend.isActive() );
 
   if (gui.button("close")) {
-    host.backend.close();
+    audioEngine.backend.close();
   }
 
   if (gui.button("restart")) {
-    host.backend.resetRequest();
+    audioEngine.backend.resetRequest();
   }
 
   if (gui.button("control panel")) {
-    host.backend.openControlPanel();
+    audioEngine.backend.openControlPanel();
   }
 
   boolean isTestingMode = gui.toggle("test noise", false);
-  host.setTestSound( isTestingMode );
-  host.setTestingChannel( gui.sliderInt("channel index", 0, 0, 128 ) );
+  audioEngine.setTestSound( isTestingMode );
+  audioEngine.setTestingChannel( gui.sliderInt("channel index", 0, 0, 128 ) );
 
   gui.pushFolder("subwoofers");
-  host.applyLowpass = gui.toggle("lowpass", host.applyLowpass);
+  audioEngine.applyLowpass = gui.toggle("lowpass", audioEngine.applyLowpass);
 
   //int subCount = gui.sliderInt("count", 1, 1, 16);
 
   float currCutoff = gui.slider("cuttoff", 120, 0, 250);
-  if (host.subLowpass!=null) {
-    if ( host.subLowpass.cutoff !=  currCutoff) {
-      host.subLowpass.setCutoff(currCutoff);
+  if (audioEngine.subLowpass!=null) {
+    if ( audioEngine.subLowpass.cutoff !=  currCutoff) {
+      audioEngine.subLowpass.setCutoff(currCutoff);
       println("set lowpass cutoff at "+currCutoff);
     }
   }
 
   float bassVolume = gui.slider("bass volume", 0.99, 0.1, 5.0);
-  if (host.subLowpass!=null) {
-    host.subLowpass.setVolume( bassVolume );
+  if (audioEngine.subLowpass!=null) {
+    audioEngine.subLowpass.setVolume( bassVolume );
   }
 
   for (int i=0; i<16; i++) {
-    if ( host.spatialEngine.preset.subChannels.size()<=i ) {
+    if ( audioEngine.spatialEngine.preset.subChannels.size()<=i ) {
       gui.hide("sub_"+i);
       break;
     } else {
       gui.show("sub_"+i);
-      gui.sliderIntSet("sub_"+i+"/channel", host.spatialEngine.preset.subChannels.get(i) );
+      gui.sliderIntSet("sub_"+i+"/channel", audioEngine.spatialEngine.preset.subChannels.get(i) );
     }
   }
   gui.popFolder(); //end subwoofers
@@ -258,7 +257,7 @@ void draw() {
   }
   //------
   float currVolume = gui.slider("volume", 0.750, 0.0, 1.0);
-  host.setVolume(currVolume);
+  audioEngine.setVolume(currVolume);
 
   //------
   String playbackModeString = gui.radio("loop", playbackModes, playbackModes[playbackModeInt] );
@@ -294,7 +293,7 @@ void draw() {
   //==================Tracks GUI======================================
 
   //enable user control when switched to manual - good for debugging
-  //!warning - subwoofer channel is NOT affected as it gets calculated directly in host...maybe i can fix this later
+  //!warning - subwoofer channel is NOT affected as it gets calculated directly in audioEngine...maybe i can fix this later
   gui.pushFolder("Tracks" );
   for (int t=0; t< playlists.playlist.samples.size(); t++) {
     Track track = playlists.playlist.samples.get(t);
@@ -329,8 +328,8 @@ void draw() {
     for (int i=0; i< 128; i++) {
       String guiPath = "gain_"+ i;
       //String guiPath = "Tracks/"+track.name+"gain_"+ i;
-      if (i<host.outputBuffers.size()) {
-        //for (int i=0; i< host.activeChannels.size(); i++) {
+      if (i<audioEngine.outputBuffers.size()) {
+        //for (int i=0; i< audioEngine.activeChannels.size(); i++) {
         gui.show(guiPath);
         if (manualControl) {
           float gain = gui.slider(guiPath, 0.001);
@@ -354,16 +353,16 @@ void draw() {
   //==================Spatial Audio GUI======================================
 
   gui.pushFolder("Spatial Engine");
-  String selectedPresetName = gui.radio("preset", host.spatialEngine.presetNames, host.spatialEngine.preset.name );
+  String selectedPresetName = gui.radio("preset", audioEngine.spatialEngine.presetNames, audioEngine.spatialEngine.preset.name );
   //if (!gui.isMouseOutsideGui() ) {//only when hovering over GUI - it collided with OSC API
-  if ( !selectedPresetName.equals(host.spatialEngine.preset.name) ) { //on change hack
-    host.spatialEngine.getPresetByName( selectedPresetName ); //use selected preset
+  if ( !selectedPresetName.equals(audioEngine.spatialEngine.preset.name) ) { //on change hack
+    audioEngine.spatialEngine.getPresetByName( selectedPresetName ); //use selected preset
     //flock1.set2D(spatialEngine.preset.is2D);
   }
 
-  host.spatialEngine.showConvexHull = gui.toggle("show hull", host.spatialEngine.showConvexHull);
-  host.spatialEngine.powerSharpness = gui.slider("sharpness", host.spatialEngine.powerSharpness, 1, 5);
-  host.spatialEngine.selectionBias = gui.slider("stickiness", host.spatialEngine.selectionBias, 0.0f, 0.5);
+  audioEngine.spatialEngine.showConvexHull = gui.toggle("show hull", audioEngine.spatialEngine.showConvexHull);
+  audioEngine.spatialEngine.powerSharpness = gui.slider("sharpness", audioEngine.spatialEngine.powerSharpness, 1, 5);
+  audioEngine.spatialEngine.selectionBias = gui.slider("stickiness", audioEngine.spatialEngine.selectionBias, 0.0f, 0.5);
 
   //----------------------------------------
   //generate new preset with dynamic functions - see SpatialEngine tab
@@ -380,10 +379,15 @@ void draw() {
 
   String spatialMode = gui.radio("spatial mode", new String[]{"dot product", "euclidian"}, "euclidian");
   if (spatialMode.equals("dot product")) {
-    host.spatialEngine.mode = host.spatialEngine.DOT_PRODUCT;
+    audioEngine.spatialEngine.mode = audioEngine.spatialEngine.DOT_PRODUCT;
   } else {
-    host.spatialEngine.mode = host.spatialEngine.EUCLIDIAN;
+    audioEngine.spatialEngine.mode = audioEngine.spatialEngine.EUCLIDIAN;
   }
+  
+  audioEngine.binaural = gui.toggle("binaural/enable", audioEngine.binaural);
+  audioEngine.binauralChannels[0] = gui.sliderInt("binaural/left channel", audioEngine.binauralChannels[0]);
+  audioEngine.binauralChannels[1] = gui.sliderInt("binaural/right channel", audioEngine.binauralChannels[1]);
+  
   gui.popFolder();
 
   //==================RENDER DRAW LOOP ======================================
@@ -395,7 +399,7 @@ void draw() {
   }
   canvas.endDraw();
 
-  host.spatialEngine.render(canvas); //it will intrenally check for preset change as well
+  audioEngine.spatialEngine.render(canvas); //it will intrenally check for preset change as well
   cam.getState().apply(canvas);
 
   image(canvas, 0, 0);
@@ -424,7 +428,7 @@ void draw() {
 void exit() {
   println("app clean exit");
   //close ASIO driver if it is running
-  host.backend.close();
+  audioEngine.backend.close();
   super.exit();
 }
 

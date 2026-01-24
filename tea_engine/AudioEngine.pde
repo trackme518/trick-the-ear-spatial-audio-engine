@@ -58,10 +58,11 @@ class AudioEngine {
   ChannelRecorder[] recorders;
   boolean recordingEnabled = false;
   int recordingChannels = 8;
-  String recordingsPath = dataPath("recordings"); //can be changed with setRecordingPath 
+  String recordingsPath = dataPath("recordings"); //can be changed with setRecordingPath
   String lastRecordingPath = recordingsPath;
 
   SharedHrtfContext sharedHRTF;
+  int[] binauralChannels = new int[2]; //which channels should be used for binaural output
 
   SpatialAudio spatialEngine;
 
@@ -93,6 +94,9 @@ class AudioEngine {
     if (!folder.exists()) {
       folder.mkdirs();
     }
+
+    binauralChannels[0] = 0; //init binaural output to first two channels
+    binauralChannels[1] = 1;
   }
 
   void setRecordingPath(String val) {
@@ -258,14 +262,12 @@ class AudioEngine {
       if (read <= 0) continue;
 
       // HRTF
-      if (binaural && channelCount > 1 && currTrack.virtualSource.hrtf != null) {
-
+      if (binaural && channelCount > 1 && currTrack.virtualSource.hrtf != null && binauralChannels[0]<outputBuffers.size() && binauralChannels[1]<outputBuffers.size() ) {
         float[][] bin = currTrack.virtualSource.hrtf.process(block);
         for (int i = 0; i < read; i++) {
-          outputBuffers.get(0)[i] += bin[0][i] * volume;
-          outputBuffers.get(1)[i] += bin[1][i] * volume;
+            outputBuffers.get(binauralChannels[0])[i] += bin[0][i] * volume;
+            outputBuffers.get(binauralChannels[1])[i] += bin[1][i] * volume;
         }
-
         continue;
       }
 

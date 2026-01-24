@@ -173,7 +173,7 @@ class Playlist {
       return;
     }
     //reset playhead position of current asio driver pointer
-    host.resetPlayhead();
+    audioEngine.resetPlayhead();
 
     this.isPlaying = true;
 
@@ -188,7 +188,7 @@ class Playlist {
 
     for (Track currTrack : samples) {
       //currTrack.reset();
-      //currTrack.sampleIndexOffset = host.sampleIndex;//startSample;
+      //currTrack.sampleIndexOffset = audioEngine.sampleIndex;//startSample;
       currTrack.play();
     }
     /*

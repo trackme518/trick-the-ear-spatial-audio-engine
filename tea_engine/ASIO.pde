@@ -1,12 +1,12 @@
 /*
- Uses: https://github.com/mhroth/jasiohost
- Include JAsioHost.jar in your Java project.
- Make jasiohost.dll available to your project. This can be done in several ways:
+ Uses: https://github.com/mhroth/jasioaudioEngine
+ Include JAsioaudioEngine.jar in your Java project.
+ Make jasioaudioEngine.dll available to your project. This can be done in several ways:
  Move or copy the library to C:\WINDOWS\system32. This is the default search location for JNI libraries.
  Inform the JVM where the library is located. This can be done with, e.g. java -Djava.library.path=C:\WINDOWS\system32
- https://github.com/mhroth/jasiohost/blob/master/src/com/synthbot/jasiohost/ExampleHost.java
+ https://github.com/mhroth/jasioaudioEngine/blob/master/src/com/synthbot/jasioaudioEngine/ExampleaudioEngine.java
  
- JAsioHost is released under the Lesser Gnu Public License (LGPL). 
+ JAsioaudioEngine is released under the Lesser Gnu Public License (LGPL). 
  Basically, the library stays open source, but you can use if for whatever you want, including closed source applications. 
  You must publicly credit the use of this library.
  

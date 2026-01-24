@@ -8,12 +8,12 @@ import java.awt.Desktop;
 //--------------------------------
 
 void setRootFolder(String pathToDir) {
-  if (host==null) {
-    println("host null");
+  if (audioEngine==null) {
+    println("audioEngine null");
   }
   playlists.setRootFolder(pathToDir);
-  host.setRecordingPath(pathToDir);
-  host.spatialEngine.loadPresets();
+  audioEngine.setRecordingPath(pathToDir);
+  audioEngine.spatialEngine.loadPresets();
   saveSettings();
 }
 
