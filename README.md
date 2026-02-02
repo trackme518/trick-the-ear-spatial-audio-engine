@@ -130,6 +130,7 @@ Download [Processing](https://processing.org/) (originally made with version 4.3
 * [Jasio host](https://github.com/mhroth/jasiohost) - ASIO SDK (Windows) - tested, works
 * [JCoreAudio](https://github.com/trackme518/JCoreAudio) CoreAudio SDK (MacOS) - untested (my modified fork to support MacOS Silicone)
 * [jnajack](https://github.com/jaudiolibs/jnajack) - Linux Audio SDK, untested (probably does not work)
+* [PeasyCam](https://github.com/jdf/peasycam) - 3D camera with orbit mouse controls
 
 ## Acknowledgments
 Special thank you to:
