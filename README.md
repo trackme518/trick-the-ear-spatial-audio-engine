@@ -36,6 +36,22 @@ Other alternative is to:
 * Righ-click the app
 * Click open, confirm the dialogue
 
+### Linux
+This is work in progress.
+
+The app uses `JACK` to output audio. Before running the app, start JACK with command `jackd`.
+
+When using `pipewire`:
+* Tested on Pop!_OS 24.04 LTS
+* You need to run the app throught compatiblity layer `pw-jack` (follow instructions below). Make sure you have JACK compatible layer installed:
+* `sudo apt update`
+* `sudo apt install pipewire-jack jackd2` ( on older distro it might be `sudo apt install pipewire-jack` )
+* No need to set realtime privileges (you can select no).
+* Now log out and log in to restart audio services. Verify installation with command:
+* `pw-jack jack_lsp`
+
+I already provide modified launcher, that runs app with `pw-jack` for you, so you can just launch `./tea_engine` as usual. 
+
 ## How to help
 * First of all - use it, that's why i made it ;-). I would be very happy if you share the results with me - ie when and how you used it (I will feature it).
 * Star this repository
@@ -47,7 +63,7 @@ Other alternative is to:
 * Templates how to connect via OSC (coming soon)
 * Minor bug fixes
 * Test on MacOS with audio card
-* Add Linux audio interface and test it (JACK?)
+* Provide Linux release
 * Add more animation types
 * Add OSC API for loading new playlist
 
