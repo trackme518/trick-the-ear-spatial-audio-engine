@@ -181,67 +181,6 @@ class JackBackend implements AudioBackend, JackProcessCallback {
     }
   }
 
-
-  /*
-  private void connectToSystemOutputs() {
-   try {
-   String[] ports = Jack.getInstance().getPorts(
-   client,
-   "system:.*",
-   JackPortType.AUDIO,
-   EnumSet.of(JackPortFlags.JackPortIsInput)
-   );
-   
-   if (ports == null || ports.length == 0) {
-   System.err.println("No JACK system playback ports found");
-   return;
-   }
-   
-   for (int i = 0; i < Math.min(outputPorts.size(), ports.length); i++) {
-   Jack.getInstance().connect(
-   client,
-   outputPorts.get(i).getName(),
-   ports[i]
-   );
-   }
-   }
-   catch (JackException e) {
-   throw new RuntimeException("Failed to connect JACK outputs", e);
-   }
-   }
-   */
-  /*
-  private void connectToSystemOutputs() {
-   try {
-   String[] ports = Jack.getInstance().getPorts(
-   client,
-   null, // match all names
-   JackPortType.AUDIO,
-   EnumSet.of(
-   JackPortFlags.JackPortIsInput,
-   JackPortFlags.JackPortIsPhysical
-   )
-   );
-   
-   if (ports == null || ports.length == 0) {
-   System.err.println("No physical JACK playback ports found");
-   return;
-   }
-   
-   for (int i = 0; i < Math.min(outputPorts.size(), ports.length); i++) {
-   Jack.getInstance().connect(
-   client,
-   outputPorts.get(i).getName(),
-   ports[i]
-   );
-   }
-   }
-   catch (JackException e) {
-   throw new RuntimeException("Failed to connect JACK outputs", e);
-   }
-   }
-   */
-
   // =====================================================
   private boolean firstRun = true;
 
