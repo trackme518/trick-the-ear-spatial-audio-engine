@@ -33,7 +33,7 @@ class CoreAudioBackend implements AudioBackend {
   // =====================================================
   @Override
     public void open(String deviceName) {
-
+    
     List<AudioDevice> devices = JCoreAudio.getAudioDeviceList();
 
     outputDevice = devices.stream()

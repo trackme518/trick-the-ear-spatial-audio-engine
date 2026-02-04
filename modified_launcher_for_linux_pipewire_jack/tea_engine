@@ -1,0 +1,35 @@
+#!/bin/sh
+
+APPDIR=$(readlink -f "$0")
+APPDIR=$(dirname "$APPDIR")
+
+JAVA="$APPDIR/java/bin/java"
+
+CP="$APPDIR:$APPDIR/lib/newhull.jar:$APPDIR/lib/slf4j-simple-2.0.17.jar:\
+$APPDIR/lib/jna.jar:$APPDIR/lib/JTransforms-3.1-with-dependencies.jar:\
+$APPDIR/lib/slf4j-api-2.0.17.jar:$APPDIR/lib/lz4-java-1.8.0.jar:\
+$APPDIR/lib/JAsioHost.jar:$APPDIR/lib/jnajack-1.4.0.jar:\
+$APPDIR/lib/commons-lang3-3.18.0.jar:$APPDIR/lib/compress-lzf-1.1.2.jar:\
+$APPDIR/lib/jna-platform.jar:$APPDIR/lib/JCoreAudio.jar:\
+$APPDIR/lib/jhdf-0.10.0.jar:$APPDIR/lib/tea_engine.jar:\
+$APPDIR/lib/jogl-all.jar:$APPDIR/lib/core.jar:$APPDIR/lib/gluegen-rt.jar:\
+$APPDIR/lib/serial.jar:$APPDIR/lib/jssc.jar:$APPDIR/lib/peasy-math.jar:\
+$APPDIR/lib/peasycam.jar:$APPDIR/lib/LazyGui.jar:$APPDIR/lib/oscP5.jar:\
+$APPDIR/lib/TUIO.jar:$APPDIR/lib/libTUIO.jar"
+
+# Optional latency (PipeWire / JACK)
+export PIPEWIRE_LATENCY=${PIPEWIRE_LATENCY:-256/48000}
+
+if command -v pw-jack >/dev/null 2>&1; then
+  exec pw-jack "$JAVA" \
+    -Djna.nosys=true \
+    -Djava.library.path="$APPDIR:$APPDIR/lib" \
+    -cp "$CP" \
+    tea_engine "$@"
+else
+  exec "$JAVA" \
+    -Djna.nosys=true \
+    -Djava.library.path="$APPDIR:$APPDIR/lib" \
+    -cp "$CP" \
+    tea_engine "$@"
+fi

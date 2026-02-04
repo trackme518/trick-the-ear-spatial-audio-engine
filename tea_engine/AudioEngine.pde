@@ -133,13 +133,15 @@ class AudioEngine {
     subLowpass = new BiquadFilter(120.0, (float) sampleRate);
 
     // init HRTF AFTER bufferSize known
+    //this is async, we MUST wait to init - using callback onHrtfReady, see below
     sharedHRTF = new SharedHrtfContext(bufferSize, this::onHrtfReady);
-
+    /*
     for (Playlist p : playlists.playlists) {
-      for (Track t : p.samples) {
-        t.virtualSource.initHrtf(sharedHRTF);
-      }
-    }
+     for (Track t : p.samples) {
+     t.virtualSource.initHrtf(sharedHRTF);
+     }
+     }
+     */
 
     initRecorders();
   }
@@ -265,8 +267,8 @@ class AudioEngine {
       if (binaural && channelCount > 1 && currTrack.virtualSource.hrtf != null && binauralChannels[0]<outputBuffers.size() && binauralChannels[1]<outputBuffers.size() ) {
         float[][] bin = currTrack.virtualSource.hrtf.process(block);
         for (int i = 0; i < read; i++) {
-            outputBuffers.get(binauralChannels[0])[i] += bin[0][i] * volume;
-            outputBuffers.get(binauralChannels[1])[i] += bin[1][i] * volume;
+          outputBuffers.get(binauralChannels[0])[i] += bin[0][i] * volume;
+          outputBuffers.get(binauralChannels[1])[i] += bin[1][i] * volume;
         }
         continue;
       }
