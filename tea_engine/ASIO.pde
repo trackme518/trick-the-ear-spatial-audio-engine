@@ -14,17 +14,9 @@
 
 //================================================================================
 // ASIO interface for Windows audio realtime multichannel playback
-class AsioBackend implements AudioBackend, AsioDriverListener {
-
+class AsioBackend extends AbstractAudioBackend implements AudioBackend, AsioDriverListener {
+  
   AsioDriver asio;
-  AudioCallback callback;
-
-  int bufferSize;
-  int channels;
-  double sampleRate;
-  boolean outputActive = false;
-
-  float[][] backendBuffers;
   Set<AsioChannel> activeChannels = new HashSet<>();
 
   @Override
@@ -47,12 +39,12 @@ class AsioBackend implements AudioBackend, AsioDriverListener {
   }
 
   @Override public boolean isActive() {
-    return this.outputActive;
+    return this.active;
   }
 
   @Override public void start() {
     asio.start();
-    this.outputActive = true; //set internal flag
+    this.active = true; //set internal flag
   }
 
   @Override public void close() {

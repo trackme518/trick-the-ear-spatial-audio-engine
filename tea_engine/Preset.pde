@@ -296,6 +296,6 @@ class PresetGenerator {
   void addToEngine(SpatialAudio sa, Preset p) {
     sa.presets.add( p ); //generate default preset
     sa.presetNames.add(p.name);
-    p.saveToJSON( dataPath(sa.settingsDir) );
+    p.saveToJSON( rootFolder+File.separator+sa.settingsDir );
   }
 }

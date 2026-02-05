@@ -19,9 +19,18 @@ interface AudioBackend {
   int getOutputChannelCount();
   String[] getDeviceNames();
   boolean isActive();
-
-
   void setCallback(AudioCallback callback);
+}
+
+//base variables avaliable to all types of Backend
+class AbstractAudioBackend {
+  //protected SpatialAudio spatialEngine;
+  protected AudioCallback callback;
+  protected int bufferSize;
+  protected double sampleRate;
+  protected int channels;
+  protected boolean active = false;
+  protected float[][] backendBuffers;
 }
 
 @FunctionalInterface

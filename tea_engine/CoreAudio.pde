@@ -14,20 +14,10 @@ import ch.section6.jcoreaudio.*;
 import java.nio.FloatBuffer;
 import java.util.*;
 
-class CoreAudioBackend implements AudioBackend {
-
-  private AudioCallback callback;
-
-  private int bufferSize;
-  private float sampleRate;
-  private int channels;
-  private boolean active = false;
-
-  private float[][] backendBuffers;
+class CoreAudioBackend extends AbstractAudioBackend implements AudioBackend {
 
   private AudioDevice outputDevice;
   private Set<AudioLet> outputLets;
-
   private long samplePosition = 0;
 
   // =====================================================
@@ -57,7 +47,7 @@ class CoreAudioBackend implements AudioBackend {
       null,
       outputLets,
       bufferSize,
-      sampleRate
+      (float)sampleRate
       );
 
     JCoreAudio.getInstance().setListener(listener);
